@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
-<html>
+<html lang='{{getlang}}'>
 	<head>
 		<meta charset="utf-8">
-		<title>{{.name}}</title>
+		<title>{{.name}} -KpnmServer</title>
 		<meta name="keywords" content="minecraft,server,mc,{{.name}}">
 		<meta name="description" content="{{.desc}}">
 		<link rel="stylesheet" type="text/css" href="/static/server/info.css">
@@ -17,7 +17,7 @@
 				<p id="info-desc">{{.desc}}</p>
 			</div>
 			<div id="status">
-				<h4>Server status: </h4>
+				<h4>{{a "title.server.status"}}: </h4>
 				<div id="status-box" style="display: none;">
 					<i><span id="status-version">None</span></i><br/>
 					<div><img id="status-favicon" style="display: none;"/></div>

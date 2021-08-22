@@ -3,7 +3,6 @@ package page_server
 
 import (
 	os "os"
-	errors "errors"
 	ioutil "io/ioutil"
 
 	kfutil "github.com/zyxgad/kpnm_svr/src/util/file"
@@ -28,27 +27,26 @@ var SERVER_CACHE = make(map[string]*serverCache)
 
 func GetServerInfo(name string)(svr *ServerInfo, err error){
 	path := kfutil.JoinPathWithoutAbs(SERVER_DATA_PATH, name, "info.json")
-	if kfutil.IsNotExist(path) {
-		return nil, errors.New("No server found")
+
+	file_stat, err := os.Stat(path)
+	if err != nil {
+		return nil, err
 	}
+
+	var cache = &serverCache{
+		mtime: file_stat.ModTime().Unix(),
+		info: nil,
+	}
+
+	if che, ok := SERVER_CACHE[name]; ok && che.mtime != 0 && che.mtime == cache.mtime{
+		return che.info, nil
+	}
+
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
-
-	var cache = &serverCache{
-		mtime: 0,
-		info: nil,
-	}
-
-	file_stat, err := file.Stat()
-	if err == nil {
-		cache.mtime = file_stat.ModTime().Unix()
-	}
-	if che, ok := SERVER_CACHE[name]; ok && che.mtime != 0 && che.mtime == cache.mtime{
-		return che.info, nil
-	}
 
 	var obj = make(json.JsonObj)
 	err = json.ReadJson(file, &obj)

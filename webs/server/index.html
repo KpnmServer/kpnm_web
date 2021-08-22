@@ -1,15 +1,15 @@
 <!DOCTYPE HTML>
-<html>
+<html lang='{{getlang}}'>
 	<head>
 		<meta charset="utf-8">
-		<title>Servers</title>
+		<title>{{a "title.minecraft.server.list"}} -KpnmServer</title>
 		<meta name="keywords" content="minecraft,server,mc,server list">
-		<meta name="description" content="Minecraft server list">
+		<meta name="description" content='{{a "description.web.server.index"}}'>
 		<link rel="stylesheet" type="text/css" href="/static/server/index.css">
 	</head>
 	<body>
 		<div id="server-box">
-			<h2 style="text-align: center;">Server list</h2>
+			<h1 style="text-align: center;">{{a "title.minecraft.server.list"}}</h1>
 			<hr/>
 			{{range $_, $ele := .}}
 			<div class="server-item">

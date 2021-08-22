@@ -106,7 +106,7 @@ func StatusPagePost(group iris.Party)(iris.Handler){
 func init(){page_mnr.Register("/server", "./webs/server", func(group iris.Party){
 	group.Get("/", IndexPage(group))
 	group.Get("/{name:string}", ServerPage(group))
-	group.Get("/{name:string}/infome", InfoMePage(group))
-	group.Get("/{name:string}/status", StatusPagePost(group))
+	group.Get("/infome/{name:string}", InfoMePage(group))
+	group.Post("/status/{name:string}", StatusPagePost(group))
 })}
 

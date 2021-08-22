@@ -2,8 +2,8 @@
 function flushStatus(){
 	$.ajax({
 		async: false,
-		url: "/server/status/" + SERVER_NAME,
-		type: "POST",
+		url: "/server/" + SERVER_NAME + "/status",
+		type: "GET",
 		success: function(res){
 			if(res.status === "ok"){
 				$("#status-error").hide();
@@ -44,9 +44,8 @@ $(document).ready(function(){
 		flushStatus();
 		setTimeout(timeFlushStatus, 5000);
 	}
-	let infoReadme = $("#info-readme");
-	let infoReadmeShadow = infoReadme[0].attachShadow({mode: "open"});
-	infoReadmeShadow.appendChild($(`<div id="body">`).load("/server/infome/" + SERVER_NAME)[0]);
+	document.getElementById("info-readme").attachShadow({mode: "open"}).appendChild(
+		$(`<div id="body">`).load("/server/" + SERVER_NAME + "/infome")[0]);
 	setTimeout(timeFlushStatus, 500);
 });
 

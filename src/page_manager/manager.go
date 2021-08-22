@@ -2,6 +2,9 @@
 package kweb_manager
 
 import (
+	os "os"
+	ioutil "io/ioutil"
+
 	iris "github.com/kataras/iris/v12"
 )
 
@@ -17,6 +20,11 @@ var DEBUG = true
 func RegisterHTML(group iris.Party, path string){
 	tmpl := iris.HTML(path, ".html")
 	tmpl.Reload(DEBUG)
+	var i18nmap I18nMap = GetGlobalI18nMapCopy()
+	var i18nmapp *I18nMap = &i18nmap
+	group.Use(LocalHandle(i18nmapp))
+	tmpl.AddFunc("a", i18nmapp.Localization)
+	tmpl.AddFunc("getlang", i18nmapp.GetLocalLang)
 	group.RegisterView(tmpl)
 }
 
@@ -39,4 +47,19 @@ func InitAll(app *iris.Application, initGroup func(iris.Party)){
 	}
 }
 
+func RegisterStatic(group iris.Party, route string, path string){
+	group.Get(route, func(ctx iris.Context){
+		var fd *os.File
+		var err error
+		fd, err = os.Open(path)
+		if err != nil {
+			panic(err)
+		}
+		data, err := ioutil.ReadAll(fd)
+		if err != nil {
+			panic(err)
+		}
+		ctx.Write(data)
+	})
+}
 

@@ -45,12 +45,17 @@ func init(){
 			KEY_FILE = obj.GetString("key_file")
 		}
 	}
+	page_mnr.GLOBAL_I18N_MAP.LoadLanguage("en-us", kfutil.JoinPath("language", "en-us", "lang.json"))
+	page_mnr.GLOBAL_I18N_MAP.LoadLanguage("zh-cn", kfutil.JoinPath("language", "zh-cn", "lang.json"))
 }
 
 func main(){
 	app := NewApp()
 
 	app.Favicon("./webs/static/favicon.ico")
+	page_mnr.RegisterStatic(app, "/robots.txt", "./webs/robots.txt")
+	page_mnr.RegisterStatic(app, "/sitemap.xml", "./webs/sitemap.xml")
+	page_mnr.RegisterStatic(app, "/google9aa38deb43e89452.html", "./google9aa38deb43e89452.html")
 	app.HandleDir("/static", iris.Dir("./webs/static"))
 
 	page_mnr.InitAll(app, func(group iris.Party){})
@@ -111,8 +116,8 @@ func bindLogger(app *iris.Application){
 		app.Logger().Printer.SetOutput(os.Stdout, logFile)
 		app.Logger().Debugf("Using \"%s\" to log requests", logFile.Name())
 	}
+	changeLogFileFunc()
 	go func(){
-		changeLogFileFunc()
 		for {
 			select{
 			case <-time.After(time.Duration(60 - (time.Now().Unix() / 60) % 60) * time.Minute):

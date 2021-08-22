@@ -6,7 +6,6 @@ import (
 	page_mnr "github.com/zyxgad/kpnm_svr/src/page_manager"
 )
 
-
 func IndexPage(ctx iris.Context){
 	ctx.View("index.html")
 }
