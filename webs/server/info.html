@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>{{.name}}</title>
+		<meta name="keywords" content="minecraft,server,mc,{{.name}}">
+		<meta name="description" content="{{.desc}}">
+		<link rel="stylesheet" type="text/css" href="/static/server/info.css">
+		<script>
+			const SERVER_NAME = "{{.name}}";
+		</script>
+	</head>
+	<body>
+		<div id="body">
+			<div id="info">
+				<h1 style="display: inline-block;" id="info-name">{{.name}}</h2> <i><span id="info-version">{{.version}}</span></i><br/>
+				<p id="info-desc">{{.desc}}</p>
+			</div>
+			<div id="status">
+				<h4>Server status: </h4>
+				<div id="status-box" style="display: none;">
+					<i><span id="status-version">None</span></i><br/>
+					<div><img id="status-favicon" style="display: none;"/></div>
+					<div><span id="status-desc" class="status-item">None</span></div>
+					<div><span id="status-ip" class="status-item">None</span></div>
+					<div><span id="status-ping" class="status-item">None</span></div>
+					<div><span id="status-player" class="status-item">
+						(<span id="status-player_count">None</span>/<span id="status-player_max_count">None</span>)
+						<ul id="status-players"></ul>
+					</span></div>
+				</div>
+				<div id="status-error">Loading please wait...</div>
+			</div>
+			<div id="info-readme"></div>
+		</div>
+
+		<script type="text/javascript" src="/static/lib/jquery-3.6.0.min.js"></script>
+		<script type="text/javascript" src="/static/server/info.js"></script>
+	</body>
+</html>

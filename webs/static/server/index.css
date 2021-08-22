@@ -1,0 +1,28 @@
+
+*{
+	margin: 0;
+	padding: 0;
+}
+
+#server-box{
+	width: 500px;
+	margin: auto;
+	margin-top: 50px;
+	padding: 10px;
+	border: #aaaaaa 1px solid;
+	border-radius: 10px;
+}
+
+.server-item{
+	width: 100%;
+	margin-top: 10px;
+	border-bottom: #aaaaaa 1px solid;
+}
+
+.server-item-name{
+	display: inline-block;
+}
+
+.server-item-name>a{
+	color: #000000;
+}

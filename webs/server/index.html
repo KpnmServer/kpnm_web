@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Servers</title>
+		<meta name="keywords" content="minecraft,server,mc,server list">
+		<meta name="description" content="Minecraft server list">
+		<link rel="stylesheet" type="text/css" href="/static/server/index.css">
+	</head>
+	<body>
+		<div id="server-box">
+			<h2 style="text-align: center;">Server list</h2>
+			<hr/>
+			{{range $_, $ele := .}}
+			<div class="server-item">
+				<h4 class="server-item-name"><a href="/server/{{$ele.Name}}">{{$ele.Name}}</a></h4>
+				<i>version: <span class="server-item-version">{{$ele.Version}}</span></i><br/>
+				<p class="server-item-desc">{{$ele.Description}}</p>
+			</div>
+			{{end}}
+		</div>
+		<script type="text/javascript" src="/static/server/index.js"></script>
+	</body>
+</html>

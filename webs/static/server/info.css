@@ -1,0 +1,91 @@
+
+*{
+	margin: 0;
+	padding: 0;
+}
+
+#body{
+	display: flex;
+	padding: 10px;
+	flex-direction: column;
+	align-items: center;
+}
+
+#info-version::before{
+	content: "(version: ";
+}
+
+#info-version::after{
+	content: ")";
+}
+
+#info-desc{
+	margin-left: 10px;
+	color: #999999;
+}
+
+#info-readme{
+	width: 700px;
+	margin: 30px auto;
+	padding: 10px;
+	border: #aaaaaa 1px solid;
+	border-radius: 10px;
+}
+
+#status{
+	width: 400px;
+	padding: 10px;
+	border: #aaaaaa 1px solid;
+	border-radius: 10px;
+}
+
+#status-version::before{
+	content: "version: ";
+}
+
+#status-favicon{
+	width: 66px;
+	height: 66px;
+	border: solid 1px #000;
+}
+
+.status-item{
+	display: inline-block;
+}
+
+#status-desc::before{
+	content: "desc: ";
+}
+
+#status-ping::before{
+	content: "ping: ";
+}
+
+#status-ping::after{
+	content: " ms";
+}
+
+#status-ip::before{
+	content: "ip: ";
+}
+
+#status-player::before{
+	content: "player(s): ";
+}
+
+#status-players{
+	margin-left: 30px;
+}
+
+#status-error::before{
+	content: "Ping Error: ";
+}
+
+#status-error{
+	color: #ee0033;
+}
+
+#status-error::after{
+	content: "\A(Please contact the server administrator)";
+	white-space: pre;
+}
