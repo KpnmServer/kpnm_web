@@ -12,8 +12,7 @@ import (
 )
 
 
-func IndexPage(group iris.Party)(iris.Handler){
-	return func(ctx iris.Context){
+func IndexPage(ctx iris.Context){
 	var svrList []*ServerInfo
 	if files, err := ioutil.ReadDir(SERVER_DATA_PATH); err == nil {
 		svrList = make([]*ServerInfo, 0, len(files))
@@ -27,7 +26,7 @@ func IndexPage(group iris.Party)(iris.Handler){
 		svrList = make([]*ServerInfo, 0)
 	}
 	ctx.View("index.html", svrList)
-}}
+}
 
 func ServerPage(ctx iris.Context){
 	name := ctx.Params().Get("name")

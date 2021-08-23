@@ -9,8 +9,8 @@ import (
 	iris "github.com/kataras/iris/v12"
 	accesslog "github.com/kataras/iris/v12/middleware/accesslog"
 
-	kfutil "github.com/KpnmServer/kpnm_web/src/util/file"
-	json "github.com/KpnmServer/kpnm_web/src/util/json"
+	kfutil "github.com/KpnmServer/go-util/file"
+	json "github.com/KpnmServer/go-util/json"
 
 	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
 	_ "github.com/KpnmServer/kpnm_web/src/pages/index"

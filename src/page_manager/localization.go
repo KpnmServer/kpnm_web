@@ -6,7 +6,7 @@ import (
 	strings "strings"
 
 	iris "github.com/kataras/iris/v12"
-	json "github.com/KpnmServer/kpnm_web/src/util/json"
+	json "github.com/KpnmServer/go-util/json"
 )
 
 type LocalMap map[string]string
