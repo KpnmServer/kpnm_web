@@ -3,5 +3,13 @@
 	"title.minecraft.server.list": "Minecraft server list",
 	"title.server.status": "Server status",
 
+	"word.server.info.version": "version",
+	"word.server.status.version": "Version",
+	"word.server.status.description": "Description",
+	"word.server.status.ip": "Connect IP",
+	"word.server.status.ping": "Ping",
+	"word.server.status.player": "Player list",
+	"word.server.status.loading": "Loading please wait...",
+
 	"description.web.server.index": "Minecraft server list, you can find minecraft servers and Monitor them status on here"
 }

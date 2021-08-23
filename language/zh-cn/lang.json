@@ -2,5 +2,14 @@
 	"title.minecraft.web": "Minecraft网站",
 	"title.minecraft.server.list": "Minecraft服务器列表",
 	"title.server.status": "服务器状态",
+
+	"word.server.info.version": "服务器版本",
+	"word.server.status.version": "版本",
+	"word.server.status.description": "描述",
+	"word.server.status.ip": "连接IP",
+	"word.server.status.ping": "延迟",
+	"word.server.status.player": "玩家列表",
+	"word.server.status.loading": "加载中, 请稍后...",
+
 	"description.web.server.index": "Minecraft服务器列表, 你可以在此找到Minecraft服务器并实时查看它们的状态"
 }

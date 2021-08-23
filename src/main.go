@@ -18,10 +18,14 @@ import (
 	_ "github.com/zyxgad/kpnm_svr/src/pages/zcs"
 )
 
-var PORT uint16 = 0
-var USE_HTTPS bool = false
-var CRT_FILE string = ""
-var KEY_FILE string = ""
+var (
+	PORT uint16 = 0
+	USE_HTTPS bool = false
+	CRT_FILE string = ""
+	KEY_FILE string = ""
+)
+
+var app *iris.Application
 
 func init(){
 	{ // read config file
@@ -45,17 +49,19 @@ func init(){
 			KEY_FILE = obj.GetString("key_file")
 		}
 	}
+	app = NewApp()
+	page_mnr.APPLICATION = app
+	page_mnr.LOGGER = app.Logger()
+
 	page_mnr.GLOBAL_I18N_MAP.LoadLanguage("en-us", kfutil.JoinPath("language", "en-us", "lang.json"))
 	page_mnr.GLOBAL_I18N_MAP.LoadLanguage("zh-cn", kfutil.JoinPath("language", "zh-cn", "lang.json"))
 }
 
 func main(){
-	app := NewApp()
-
 	app.Favicon("./webs/static/favicon.ico")
-	page_mnr.RegisterStatic(app, "/robots.txt", "./webs/robots.txt")
-	page_mnr.RegisterStatic(app, "/sitemap.xml", "./webs/sitemap.xml")
-	page_mnr.RegisterStatic(app, "/google9aa38deb43e89452.html", "./google9aa38deb43e89452.html")
+	page_mnr.RegisterStatic(app, "/robots.txt", "./webs/robots.txt", false)
+	page_mnr.RegisterStatic(app, "/sitemap.xml", "./webs/sitemap.xml", true)
+	page_mnr.RegisterStatic(app, "/google9aa38deb43e89452.html", "./google9aa38deb43e89452.html", false)
 	app.HandleDir("/static", iris.Dir("./webs/static"))
 
 	page_mnr.InitAll(app, func(group iris.Party){})

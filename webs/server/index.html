@@ -14,7 +14,7 @@
 			{{range $_, $ele := .}}
 			<div class="server-item">
 				<h4 class="server-item-name"><a href="/server/{{$ele.Name}}">{{$ele.Name}}</a></h4>
-				<i>version: <span class="server-item-version">{{$ele.Version}}</span></i><br/>
+				<i>{{a "word.server.info.version"}}: <span class="server-item-version">{{$ele.Version}}</span></i><br/>
 				<p class="server-item-desc">{{$ele.Description}}</p>
 			</div>
 			{{end}}

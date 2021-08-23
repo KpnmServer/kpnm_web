@@ -13,23 +13,24 @@
 	<body>
 		<div id="body">
 			<div id="info">
-				<h1 style="display: inline-block;" id="info-name">{{.name}}</h2> <i><span id="info-version">{{.version}}</span></i><br/>
+				<h1 style="display: inline-block;" id="info-name">{{.name}}</h2>
+					<i>({{a "word.server.info.version"}}: <span id="info-version">{{.version}}</span> )</i><br/>
 				<p id="info-desc">{{.desc}}</p>
 			</div>
 			<div id="status">
 				<h4>{{a "title.server.status"}}: </h4>
 				<div id="status-box" style="display: none;">
-					<i><span id="status-version">None</span></i><br/>
+					<i>{{a "word.server.status.version"}}: <span id="status-version">None</span></i><br/>
 					<div><img id="status-favicon" style="display: none;"/></div>
-					<div><span id="status-desc" class="status-item">None</span></div>
-					<div><span id="status-ip" class="status-item">None</span></div>
-					<div><span id="status-ping" class="status-item">None</span></div>
-					<div><span id="status-player" class="status-item">
-						(<span id="status-player_count">None</span>/<span id="status-player_max_count">None</span>)
+					<div>{{a "word.server.status.description"}}: <span id="status-desc" class="status-item">None</span></div>
+					<div>{{a "word.server.status.ip"}}: <span id="status-ip" class="status-item">None</span></div>
+					<div>{{a "word.server.status.ping"}}: <span id="status-ping" class="status-item">None</span> ms</div>
+					<div><span id="status-player" class="status-item">{{a "word.server.status.player"}}: 
+						(<span id="status-player_count">None</span>/<span id="status-player_max_count">None</span>) 
 						<ul id="status-players"></ul>
 					</span></div>
 				</div>
-				<div id="status-error">Loading please wait...</div>
+				<div id="status-error">{{a "word.server.status.loading"}}</div>
 			</div>
 			<div id="info-readme"></div>
 		</div>

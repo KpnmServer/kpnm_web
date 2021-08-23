@@ -2,111 +2,35 @@
 package page_server
 
 import (
-	fmt "fmt"
-	ioutil "io/ioutil"
-	http "net/http"
+	// http "net/http"
 
 	iris "github.com/kataras/iris/v12"
-	mc_util "github.com/zyxgad/go-mc_util"
 	page_mnr "github.com/zyxgad/kpnm_svr/src/page_manager"
 )
 
+func IndexPage(ctx iris.Context){
+	ctx.View("index.html")
+}
 
-func IndexPage(group iris.Party)(iris.Handler){
-	return func(ctx iris.Context){
-	var svrList []*ServerInfo
-	if files, err := ioutil.ReadDir(SERVER_DATA_PATH); err == nil {
-		svrList = make([]*ServerInfo, 0, len(files))
-		for _, file := range files {
-			svr, e := GetServerInfo(file.Name())
-			if e == nil {
-				svrList = append(svrList, svr)
-			}
-		}
-	}else{
-		svrList = make([]*ServerInfo, 0)
-	}
-	ctx.View("index.html", svrList)
-}}
-
-func ServerPage(group iris.Party)(iris.Handler){
-	return func(ctx iris.Context){
-	name := ctx.Params().Get("name")
-	svr, err := GetServerInfo(name)
-	if err != nil {
-		group.Logger().Debugf("Get server \"%s\" error: %v", name, err)
-		ctx.StatusCode(http.StatusNotFound)
-		return
-	}
-	ctx.View("info.html", iris.Map{
-		"name": svr.Name,
-		"version": svr.Version,
-		"desc": svr.Description,
+func UserIndexPage(ctx iris.Context){
+	ctx.View("user.html", iris.Map{
+		
 	})
-}}
+}
 
-func InfoMePage(group iris.Party)(iris.Handler){
-	return func(ctx iris.Context){
-	name := ctx.Params().Get("name")
-	data, err := GetServerReadme(name)
-	if err != nil {
-		ctx.StatusCode(http.StatusNotFound)
-		return
-	}
-	ctx.Markdown(data)
-}}
+func SetLoginPage(ctx iris.Context){
+	ctx.View("index.html")
+}
 
-func StatusPagePost(group iris.Party)(iris.Handler){
-	return func(ctx iris.Context){
-	name := ctx.Params().Get("name")
-	svr, err := GetServerInfo(name)
-	if err != nil {
-		ctx.JSON(iris.Map{
-			"status": "error",
-			"errorMessage": err.Error(),
-		})
-		return
-	}
-	var (
-		status *mc_util.ServerStatus
-		host string
-		port uint16
-	)
-	for _, addr := range svr.Addrs {
-		host = addr.GetString(0)
-		port = addr.GetUInt16(1)
-		group.Logger().Debugf("Pinging \"%s:%d\"", host, port)
-		status, err = mc_util.Ping(host, port)
-		if err == nil {
-			group.Logger().Debugf("Ping \"%s:%d\" success", host, port)
-			break
-		}
-		group.Logger().Debugf("Ping \"%s:%d\" failed: %v", host, port, err)
-	}
-	if err != nil {
-		ctx.JSON(iris.Map{
-			"status": "error",
-			"errorMessage": err.Error(),
-		})
-		return
-	}
-	ctx.JSON(iris.Map{
-		"status": "ok",
-		"ping": status.Delay,
-		"desc": status.Description,
-		"ip": fmt.Sprintf("%s:%d", host, port),
-		"players": status.Players,
-		"player_count": status.Online_player,
-		"player_max_count": status.Max_player,
-		"version": status.Version,
-		"favicon": status.Favicon,
-	})
-}}
+func SetRegistePage(ctx iris.Context){
+	ctx.View("index.html")
+}
 
-func init(){page_mnr.Register("/server", "./webs/server", func(group iris.Party){
-	group.Get("/", IndexPage(group))
-	group.Get("/{name:string}", ServerPage(group))
-	group.Get("/infome/{name:string}", InfoMePage(group))
-	group.Post("/status/{name:string}", StatusPagePost(group))
+
+func init(){page_mnr.Register("/user", "./webs/user", func(group iris.Party){
+	group.Get("/", IndexPage)
+	group.Get("/{user:string}", UserIndexPage)
+	group.Get("/setting/login", SetLoginPage)
+	group.Get("/setting/registe", SetRegistePage)
 })}
 

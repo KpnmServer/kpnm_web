@@ -29,12 +29,11 @@ func IndexPage(group iris.Party)(iris.Handler){
 	ctx.View("index.html", svrList)
 }}
 
-func ServerPage(group iris.Party)(iris.Handler){
-	return func(ctx iris.Context){
+func ServerPage(ctx iris.Context){
 	name := ctx.Params().Get("name")
 	svr, err := GetServerInfo(name)
 	if err != nil {
-		group.Logger().Debugf("Get server \"%s\" error: %v", name, err)
+		page_mnr.LOGGER.Debugf("Get server \"%s\" error: %v", name, err)
 		ctx.StatusCode(http.StatusNotFound)
 		return
 	}
@@ -43,10 +42,9 @@ func ServerPage(group iris.Party)(iris.Handler){
 		"version": svr.Version,
 		"desc": svr.Description,
 	})
-}}
+}
 
-func InfoMePage(group iris.Party)(iris.Handler){
-	return func(ctx iris.Context){
+func InfoMePage(ctx iris.Context){
 	name := ctx.Params().Get("name")
 	data, err := GetServerReadme(name)
 	if err != nil {
@@ -54,10 +52,9 @@ func InfoMePage(group iris.Party)(iris.Handler){
 		return
 	}
 	ctx.Markdown(data)
-}}
+}
 
-func StatusPagePost(group iris.Party)(iris.Handler){
-	return func(ctx iris.Context){
+func StatusPagePost(ctx iris.Context){
 	name := ctx.Params().Get("name")
 	svr, err := GetServerInfo(name)
 	if err != nil {
@@ -75,13 +72,13 @@ func StatusPagePost(group iris.Party)(iris.Handler){
 	for _, addr := range svr.Addrs {
 		host = addr.GetString(0)
 		port = addr.GetUInt16(1)
-		group.Logger().Debugf("Pinging \"%s:%d\"", host, port)
+		page_mnr.LOGGER.Debugf("Pinging \"%s:%d\"", host, port)
 		status, err = mc_util.Ping(host, port)
 		if err == nil {
-			group.Logger().Debugf("Ping \"%s:%d\" success", host, port)
+			page_mnr.LOGGER.Debugf("Ping \"%s:%d\" success", host, port)
 			break
 		}
-		group.Logger().Debugf("Ping \"%s:%d\" failed: %v", host, port, err)
+		page_mnr.LOGGER.Debugf("Ping \"%s:%d\" failed: %v", host, port, err)
 	}
 	if err != nil {
 		ctx.JSON(iris.Map{
@@ -101,12 +98,12 @@ func StatusPagePost(group iris.Party)(iris.Handler){
 		"version": status.Version,
 		"favicon": status.Favicon,
 	})
-}}
+}
 
 func init(){page_mnr.Register("/server", "./webs/server", func(group iris.Party){
-	group.Get("/", IndexPage(group))
-	group.Get("/{name:string}", ServerPage(group))
-	group.Get("/{name:string}/infome", InfoMePage(group))
-	group.Get("/{name:string}/status", StatusPagePost(group))
+	group.Get("/", IndexPage)
+	group.Get("/{name:string}", ServerPage)
+	group.Get("/{name:string}/infome", InfoMePage)
+	group.Get("/{name:string}/status", StatusPagePost)
 })}
 

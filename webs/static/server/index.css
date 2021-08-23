@@ -5,24 +5,35 @@
 }
 
 #server-box{
-	width: 500px;
+	width: 40rem;
 	margin: auto;
-	margin-top: 50px;
-	padding: 10px;
+	margin-top: 5rem;
+	padding: 0.65rem;
 	border: #aaaaaa 1px solid;
-	border-radius: 10px;
+	border-radius: 0.5rem;
 }
 
 .server-item{
 	width: 100%;
-	margin-top: 10px;
+	margin-top: 1rem;
 	border-bottom: #aaaaaa 1px solid;
 }
 
 .server-item-name{
 	display: inline-block;
+	font-size: 1.4rem;
 }
 
 .server-item-name>a{
 	color: #000000;
+}
+
+.server-item-version{
+	font-size: 1.05rem;
+}
+
+.server-item-desc{
+	margin-left: 0.5rem;
+	font-size: 1.1rem;
+	color: #999999;
 }

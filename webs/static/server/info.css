@@ -11,66 +11,34 @@
 	align-items: center;
 }
 
-#info-version::before{
-	content: "(version: ";
-}
-
-#info-version::after{
-	content: ")";
-}
-
 #info-desc{
 	margin-left: 10px;
 	color: #999999;
 }
 
 #info-readme{
-	width: 700px;
-	margin: 30px auto;
-	padding: 10px;
+	width: 45rem;
+	margin: 2rem auto;
+	padding: 0.7rem;
 	border: #aaaaaa 1px solid;
-	border-radius: 10px;
+	border-radius: 0.7rem;
 }
 
 #status{
-	width: 400px;
-	padding: 10px;
+	width: 28rem;
+	padding: 0.7rem;
 	border: #aaaaaa 1px solid;
-	border-radius: 10px;
-}
-
-#status-version::before{
-	content: "version: ";
+	border-radius: 0.7rem;
 }
 
 #status-favicon{
-	width: 66px;
-	height: 66px;
+	width: 4rem;
+	height: 4rem;
 	border: solid 1px #000;
 }
 
 .status-item{
 	display: inline-block;
-}
-
-#status-desc::before{
-	content: "desc: ";
-}
-
-#status-ping::before{
-	content: "ping: ";
-}
-
-#status-ping::after{
-	content: " ms";
-}
-
-#status-ip::before{
-	content: "ip: ";
-}
-
-#status-player::before{
-	content: "player(s): ";
 }
 
 #status-players{

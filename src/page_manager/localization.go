@@ -34,7 +34,7 @@ func GetGlobalI18nMapCopy()(I18nMap){
 }
 
 func splitLocalString(local string)(lang string, area string){
-	arr := strings.Split(strings.ToLower(local), "-")
+	arr := strings.SplitN(strings.ToLower(local), "-", 2)
 	lang = arr[0]
 	if len(arr) > 1 {
 		area = arr[1]
@@ -55,7 +55,8 @@ func (imap *I18nMap)LoadLanguage(local string, path string)(err error){
 	if err != nil {
 		return
 	}
-	lang, area := splitLocalString(strings.ToLower(local))
+	lang, area := splitLocalString(local)
+	APPLICATION.Logger().Debugf("Loading language: '%s/%s'", lang, area)
 	areaMap, ok := imap.languages[lang]
 	if !ok {
 		areaMap = AreaMap{
@@ -87,10 +88,11 @@ func (imap *I18nMap)LoadLanguage(local string, path string)(err error){
 }
 
 func (imap *I18nMap)getLocalMap(local0 string)(areaMap AreaMap, localMap LocalMap, local string){
-	lang, area := splitLocalString(strings.ToLower(local0))
+	lang, area := splitLocalString(local0)
 	areaMap, ok := imap.languages[lang]
 	if !ok {
 		areaMap = imap.languages[imap.defaultLang]
+		lang = imap.defaultLang
 		area = ""
 	}
 	if area == "" {
@@ -106,8 +108,12 @@ func (imap *I18nMap)getLocalMap(local0 string)(areaMap AreaMap, localMap LocalMa
 
 func (imap *I18nMap)SetLocalLang(local string){
 	var localMap LocalMap
+	locals := strings.Split(strings.SplitN(local, ";", 2)[0], ",")
+	local = locals[0]
+	LOGGER.Debugf("User language=%s", local)
 	imap.localAreaMap, localMap, imap.localLang = imap.getLocalMap(local)
 	imap.localAreaMap.localMap = localMap
+	LOGGER.Debugf("Set language=%s", imap.localLang)
 }
 
 func (imap *I18nMap)GetLocalLang()(string){

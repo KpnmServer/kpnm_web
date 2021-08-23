@@ -6,6 +6,7 @@ import (
 	ioutil "io/ioutil"
 
 	iris "github.com/kataras/iris/v12"
+	golog "github.com/kataras/golog"
 )
 
 type pageInfo struct{
@@ -15,6 +16,8 @@ type pageInfo struct{
 }
 
 var _PAGES = make([]*pageInfo, 0)
+var APPLICATION *iris.Application
+var LOGGER *golog.Logger
 var DEBUG = true
 
 func RegisterHTML(group iris.Party, path string){
@@ -47,19 +50,39 @@ func InitAll(app *iris.Application, initGroup func(iris.Party)){
 	}
 }
 
-func RegisterStatic(group iris.Party, route string, path string){
-	group.Get(route, func(ctx iris.Context){
+func RegisterStatic(group iris.Party, route string, path string, reload bool){
+	if reload {
+		group.Get(route, func(ctx iris.Context){
+			var fd *os.File
+			var err error
+			fd, err = os.Open(path)
+			if err != nil {
+				group.Logger().Errorf("Register static file error: %v", err)
+				return
+			}
+			data, err := ioutil.ReadAll(fd)
+			if err != nil {
+				group.Logger().Errorf("Register static file error: %v", err)
+				return
+			}
+			ctx.Write(data)
+		})
+	}else{
 		var fd *os.File
 		var err error
 		fd, err = os.Open(path)
 		if err != nil {
-			panic(err)
+				group.Logger().Errorf("Register static file error: %v", err)
+				return
 		}
 		data, err := ioutil.ReadAll(fd)
 		if err != nil {
-			panic(err)
+				group.Logger().Errorf("Register static file error: %v", err)
+				return
 		}
-		ctx.Write(data)
-	})
+		group.Get(route, func(ctx iris.Context){
+			ctx.Write(data)
+		})
+	}
 }
 

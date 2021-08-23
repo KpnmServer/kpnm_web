@@ -7,12 +7,11 @@ import (
 )
 
 
-func IndexPage(group iris.Party)(iris.Handler){
-	return func(ctx iris.Context){
+func IndexPage(ctx iris.Context){
 	ctx.View("index.html")
-}}
+}
 
 func init(){page_mnr.Register("/zcs", "./webs/zcs", func(group iris.Party){
-	group.Get("/", IndexPage(group))
+	group.Get("/", IndexPage)
 })}
 
