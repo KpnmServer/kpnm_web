@@ -5,8 +5,8 @@ import (
 	os "os"
 	ioutil "io/ioutil"
 
-	kfutil "github.com/zyxgad/kpnm_svr/src/util/file"
-	json "github.com/zyxgad/kpnm_svr/src/util/json"
+	kfutil "github.com/KpnmServer/kpnm_web/src/util/file"
+	json "github.com/KpnmServer/kpnm_web/src/util/json"
 )
 
 var SERVER_DATA_PATH string = "./data/server"

@@ -1,11 +1,11 @@
 
-package page_server
+package page_user
 
 import (
 	// http "net/http"
 
 	iris "github.com/kataras/iris/v12"
-	page_mnr "github.com/zyxgad/kpnm_svr/src/page_manager"
+	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
 )
 
 func IndexPage(ctx iris.Context){
@@ -13,8 +13,9 @@ func IndexPage(ctx iris.Context){
 }
 
 func UserIndexPage(ctx iris.Context){
+	user := ctx.Params().Get("user")
 	ctx.View("user.html", iris.Map{
-		
+		"user": user
 	})
 }
 

@@ -3,7 +3,7 @@ package page_index
 
 import (
 	iris "github.com/kataras/iris/v12"
-	page_mnr "github.com/zyxgad/kpnm_svr/src/page_manager"
+	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
 )
 
 func IndexPage(ctx iris.Context){

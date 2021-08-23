@@ -7,8 +7,8 @@ import (
 	http "net/http"
 
 	iris "github.com/kataras/iris/v12"
-	mc_util "github.com/zyxgad/go-mc_util"
-	page_mnr "github.com/zyxgad/kpnm_svr/src/page_manager"
+	mc_util "github.com/KpnmServer/go-mc_util"
+	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
 )
 
 

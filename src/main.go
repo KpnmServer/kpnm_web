@@ -9,13 +9,13 @@ import (
 	iris "github.com/kataras/iris/v12"
 	accesslog "github.com/kataras/iris/v12/middleware/accesslog"
 
-	kfutil "github.com/zyxgad/kpnm_svr/src/util/file"
-	json "github.com/zyxgad/kpnm_svr/src/util/json"
+	kfutil "github.com/KpnmServer/kpnm_web/src/util/file"
+	json "github.com/KpnmServer/kpnm_web/src/util/json"
 
-	page_mnr "github.com/zyxgad/kpnm_svr/src/page_manager"
-	_ "github.com/zyxgad/kpnm_svr/src/pages/index"
-	_ "github.com/zyxgad/kpnm_svr/src/pages/server"
-	_ "github.com/zyxgad/kpnm_svr/src/pages/zcs"
+	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
+	_ "github.com/KpnmServer/kpnm_web/src/pages/index"
+	_ "github.com/KpnmServer/kpnm_web/src/pages/server"
+	_ "github.com/KpnmServer/kpnm_web/src/pages/zcs"
 )
 
 var (
