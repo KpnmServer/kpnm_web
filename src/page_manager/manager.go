@@ -7,7 +7,6 @@ import (
 	htmltmpl "html/template"
 
 	iris "github.com/kataras/iris/v12"
-	golog "github.com/kataras/golog"
 )
 
 type pageInfo struct{
@@ -17,9 +16,6 @@ type pageInfo struct{
 }
 
 var _PAGES = make([]*pageInfo, 0)
-var APPLICATION *iris.Application
-var LOGGER *golog.Logger
-var DEBUG = true
 
 func RegisterHTML(group iris.Party, path string){
 	tmpl := iris.HTML(path, ".html")

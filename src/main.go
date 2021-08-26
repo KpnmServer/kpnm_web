@@ -9,7 +9,7 @@ import (
 	iris "github.com/kataras/iris/v12"
 	accesslog "github.com/kataras/iris/v12/middleware/accesslog"
 
-	kfutil "github.com/KpnmServer/go-util/file"
+	ufile "github.com/KpnmServer/go-util/file"
 	json "github.com/KpnmServer/go-util/json"
 
 	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
@@ -32,7 +32,7 @@ func init(){
 	{ // read config file
 		var fd *os.File
 		var err error
-		fd, err = os.Open(kfutil.JoinPath("config", "config.json"))
+		fd, err = os.Open(ufile.JoinPath("config", "config.json"))
 		if err != nil {
 			panic(err)
 		}
@@ -54,8 +54,8 @@ func init(){
 	page_mnr.APPLICATION = app
 	page_mnr.LOGGER = app.Logger()
 
-	page_mnr.GLOBAL_I18N_MAP.LoadLanguage("en-us", kfutil.JoinPath("language", "en-us", "lang.json"))
-	page_mnr.GLOBAL_I18N_MAP.LoadLanguage("zh-cn", kfutil.JoinPath("language", "zh-cn", "lang.json"))
+	page_mnr.GLOBAL_I18N_MAP.LoadLanguage("en-us", ufile.JoinPath("language", "en-us", "lang.json"))
+	page_mnr.GLOBAL_I18N_MAP.LoadLanguage("zh-cn", ufile.JoinPath("language", "zh-cn", "lang.json"))
 }
 
 func main(){
@@ -103,7 +103,7 @@ func NewApp()(app *iris.Application){
 
 func bindLogger(app *iris.Application){
 	var logFile *os.File
-	kfutil.CreateDir("./logs")
+	ufile.CreateDir("./logs")
 
 	app.ConfigureHost(func(su *iris.Supervisor){
 		su.RegisterOnShutdown(func(){
@@ -112,7 +112,7 @@ func bindLogger(app *iris.Application){
 			}
 		})
 	})
-	app.UseRouter(accesslog.New(kfutil.HandleWriter(func(bts []byte)(int, error){
+	app.UseRouter(accesslog.New(ufile.HandleWriter(func(bts []byte)(int, error){
 		app.Logger().Info(string(bts))
 		return len(bts), nil
 	})).SetFormatter(&accesslog.Template{

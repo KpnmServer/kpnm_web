@@ -35,6 +35,11 @@ function flushStatus(){
 				// $("#status-player_max_count").text("None");
 				// $("#status-players").html("");
 			}
+		},
+		failed: function(res){
+			$("#status-box").hide();
+			$("#status-error").text("" + res + typeof res);
+			$("#status-error").show();
 		}
 	});
 }

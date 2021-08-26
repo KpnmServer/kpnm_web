@@ -5,11 +5,10 @@ import (
 	os "os"
 	ioutil "io/ioutil"
 
-	kfutil "github.com/KpnmServer/go-util/file"
+	ufile "github.com/KpnmServer/go-util/file"
 	json "github.com/KpnmServer/go-util/json"
 )
 
-var SERVER_DATA_PATH string = "./data/server"
 
 type ServerInfo struct{
 	Name string
@@ -26,7 +25,7 @@ type serverCache struct{
 var SERVER_CACHE = make(map[string]*serverCache)
 
 func GetServerInfo(name string)(svr *ServerInfo, err error){
-	path := kfutil.JoinPathWithoutAbs(SERVER_DATA_PATH, name, "info.json")
+	path := ufile.JoinPathWithoutAbs(SERVER_DATA_PATH, name, "info.json")
 
 	file_stat, err := os.Stat(path)
 	if err != nil {
@@ -65,8 +64,8 @@ func GetServerInfo(name string)(svr *ServerInfo, err error){
 
 func SetServerInfo(svr *ServerInfo)(err error){
 	delete(SERVER_CACHE, svr.Name)
-	kfutil.CreateDir(kfutil.JoinPathWithoutAbs(SERVER_DATA_PATH, svr.Name))
-	path := kfutil.JoinPathWithoutAbs(SERVER_DATA_PATH, svr.Name, "info.json")
+	ufile.CreateDir(ufile.JoinPathWithoutAbs(SERVER_DATA_PATH, svr.Name))
+	path := ufile.JoinPathWithoutAbs(SERVER_DATA_PATH, svr.Name, "info.json")
 	file, err := os.OpenFile(path, os.O_CREATE | os.O_WRONLY | os.O_SYNC, 0600)
 	if err != nil {
 		return err
@@ -80,7 +79,7 @@ func SetServerInfo(svr *ServerInfo)(err error){
 }
 
 func GetServerReadme(name string)(data []byte, err error){
-	file, err := os.Open(kfutil.JoinPathWithoutAbs(SERVER_DATA_PATH, name, "README.MD"))
+	file, err := os.Open(ufile.JoinPathWithoutAbs(SERVER_DATA_PATH, name, "README.MD"))
 	if err != nil {
 		return nil, err
 	}

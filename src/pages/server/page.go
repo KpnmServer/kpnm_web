@@ -9,9 +9,11 @@ import (
 	iris "github.com/kataras/iris/v12"
 	iris_context "github.com/kataras/iris/v12/context"
 	mc_util "github.com/KpnmServer/go-mc_util"
+	ufile "github.com/KpnmServer/go-util/file"
 	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
 )
 
+var SERVER_DATA_PATH string = ufile.JoinPath(page_mnr.DATA_PATH, "server")
 
 func IndexPage(ctx iris.Context){
 	var svrList []*ServerInfo

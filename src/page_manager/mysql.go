@@ -6,7 +6,7 @@ import (
 	fmt "fmt"
 	time "time"
 
-	kfutil "github.com/KpnmServer/go-util/file"
+	ufile "github.com/KpnmServer/go-util/file"
 	json "github.com/KpnmServer/go-util/json"
 
 	kpsql "github.com/KpnmServer/go-kpsql"
@@ -25,12 +25,11 @@ var (
 var SQLDB kpsql.SqlDatabase
 
 func init(){
-	return
 	var err error
 	{// Read config
 		var fd *os.File
 		var err error
-		fd, err = os.Open(kfutil.JoinPath("config", "sql.json"))
+		fd, err = os.Open(ufile.JoinPath("config", "sql.json"))
 		if err != nil {
 			panic(err)
 		}

@@ -3,34 +3,40 @@ package page_user
 
 import (
 	iris "github.com/kataras/iris/v12"
+	ufile "github.com/KpnmServer/go-util/file"
 	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
 )
+
+var USER_DATA_PATH string = ufile.JoinPath(page_mnr.DATA_PATH, "user")
 
 func IndexPage(ctx iris.Context){
 	ctx.View("index.html")
 }
 
 func UserIndexPage(ctx iris.Context){
-	user := ctx.Params().Get("user")
+	name := ctx.Params().Get("name")
+	user := GetUserDataByName(name)
 	ctx.View("user.html", iris.Map{
-		"user": user
+		"name": name,
+		"desc": user.Desc,
+		"frozen": user.Frozen,
 	})
 }
 
 func LoginPage(ctx iris.Context){
-	ctx.View("index.html")
+	ctx.View("login.html")
 }
 
-func RegistePage(ctx iris.Context){
-	ctx.View("index.html")
+func RegisterPage(ctx iris.Context){
+	ctx.View("register.html")
 }
 
 
 func init(){page_mnr.Register("/user", "./webs/user", func(group iris.Party){
 	group.Get("/", IndexPage)
-	group.Get("/{user:string}", UserIndexPage)
+	group.Get("/{name:string}", UserIndexPage)
 	group.Get("/setting/login", LoginPage)
-	group.Get("/setting/registe", RegistePage)
+	group.Get("/setting/register", RegisterPage)
 	InitApi(group)
 })}
 
