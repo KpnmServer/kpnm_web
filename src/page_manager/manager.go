@@ -4,6 +4,7 @@ package kweb_manager
 import (
 	os "os"
 	ioutil "io/ioutil"
+	htmltmpl "html/template"
 
 	iris "github.com/kataras/iris/v12"
 	golog "github.com/kataras/golog"
@@ -28,6 +29,7 @@ func RegisterHTML(group iris.Party, path string){
 	group.Use(LocalHandle(i18nmapp))
 	tmpl.AddFunc("a", i18nmapp.Localization)
 	tmpl.AddFunc("getlang", i18nmapp.GetLocalLang)
+	tmpl.AddFunc("noesc", func(dt string)(interface{}){ return htmltmpl.HTML(dt) })
 	group.RegisterView(tmpl)
 }
 

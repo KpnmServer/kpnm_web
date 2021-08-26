@@ -3,10 +3,11 @@ package page_server
 
 import (
 	fmt "fmt"
+	bytes "bytes"
 	ioutil "io/ioutil"
-	http "net/http"
 
 	iris "github.com/kataras/iris/v12"
+	iris_context "github.com/kataras/iris/v12/context"
 	mc_util "github.com/KpnmServer/go-mc_util"
 	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
 )
@@ -33,24 +34,23 @@ func ServerPage(ctx iris.Context){
 	svr, err := GetServerInfo(name)
 	if err != nil {
 		page_mnr.LOGGER.Debugf("Get server \"%s\" error: %v", name, err)
-		ctx.StatusCode(http.StatusNotFound)
+		ctx.StatusCode(iris.StatusNotFound)
 		return
+	}
+	var (
+		readme_data []byte
+		readme_buf *bytes.Buffer = bytes.NewBuffer([]byte{})
+	)
+	readme_data, err = GetServerReadme(name)
+	if err == nil {
+		iris_context.WriteMarkdown(readme_buf, readme_data, iris_context.DefaultMarkdownOptions)
 	}
 	ctx.View("info.html", iris.Map{
 		"name": svr.Name,
 		"version": svr.Version,
 		"desc": svr.Description,
+		"readme": readme_buf.String(),
 	})
-}
-
-func InfoMePage(ctx iris.Context){
-	name := ctx.Params().Get("name")
-	data, err := GetServerReadme(name)
-	if err != nil {
-		ctx.StatusCode(http.StatusNotFound)
-		return
-	}
-	ctx.Markdown(data)
 }
 
 func StatusPagePost(ctx iris.Context){
@@ -102,7 +102,6 @@ func StatusPagePost(ctx iris.Context){
 func init(){page_mnr.Register("/server", "./webs/server", func(group iris.Party){
 	group.Get("/", IndexPage)
 	group.Get("/{name:string}", ServerPage)
-	group.Get("/{name:string}/infome", InfoMePage)
 	group.Get("/{name:string}/status", StatusPagePost)
 })}
 

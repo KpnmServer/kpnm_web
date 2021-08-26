@@ -15,6 +15,7 @@ import (
 	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
 	_ "github.com/KpnmServer/kpnm_web/src/pages/index"
 	_ "github.com/KpnmServer/kpnm_web/src/pages/server"
+	_ "github.com/KpnmServer/kpnm_web/src/pages/user"
 	_ "github.com/KpnmServer/kpnm_web/src/pages/zcs"
 )
 
@@ -58,12 +59,14 @@ func init(){
 }
 
 func main(){
+	page_mnr.RegisterHTML(app, "./webs/globals")
 	app.Favicon("./webs/static/favicon.ico")
 	page_mnr.RegisterStatic(app, "/robots.txt", "./webs/robots.txt", false)
 	page_mnr.RegisterStatic(app, "/sitemap.xml", "./webs/sitemap.xml", true)
 	page_mnr.RegisterStatic(app, "/google9aa38deb43e89452.html", "./google9aa38deb43e89452.html", false)
 	app.HandleDir("/static", iris.Dir("./webs/static"))
 
+	registerErrorPages(app)
 	page_mnr.InitAll(app, func(group iris.Party){})
 
 	ipaddr := fmt.Sprintf("%s:%d", "0.0.0.0", PORT)
@@ -74,6 +77,14 @@ func main(){
 	}
 }
 
+func registerErrorPages(group iris.Party){
+	group.OnErrorCode(iris.StatusNotFound, func(ctx iris.Context){
+		url := ctx.Request().URL
+		ctx.View("404.html", iris.Map{
+			"path": url.Path,
+		})
+	})
+}
 
 func NewApp()(app *iris.Application){
 	app = iris.New()

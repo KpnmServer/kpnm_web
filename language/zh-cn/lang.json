@@ -3,6 +3,7 @@
 	"title.minecraft.server.list": "Minecraft服务器列表",
 	"title.server.status": "服务器状态",
 
+	"word.message.back": "回到",
 	"word.server.info.version": "服务器版本",
 	"word.server.status.version": "版本",
 	"word.server.status.description": "描述",

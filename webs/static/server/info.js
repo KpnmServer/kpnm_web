@@ -44,8 +44,6 @@ $(document).ready(function(){
 		flushStatus();
 		setTimeout(timeFlushStatus, 5000);
 	}
-	document.getElementById("info-readme").attachShadow({mode: "open"}).appendChild(
-		$(`<div id="body">`).load("/server/" + SERVER_NAME + "/infome")[0]);
 	setTimeout(timeFlushStatus, 500);
 });
 

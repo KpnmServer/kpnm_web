@@ -5,34 +5,40 @@
 		<title>{{.name}} -KpnmServer</title>
 		<meta name="keywords" content="minecraft,server,mc,{{.name}}">
 		<meta name="description" content="{{.desc}}">
+		<link rel="stylesheet" type="text/css" href="/static/lib/global.css">
 		<link rel="stylesheet" type="text/css" href="/static/server/info.css">
+		<link rel="stylesheet" type="text/css" href="/static/lib/markdown.css">
 		<script>
 			const SERVER_NAME = "{{.name}}";
 		</script>
 	</head>
 	<body>
 		<div id="body">
+			<a href="/server/">{{a "word.message.back"}} {{a "title.minecraft.server.list"}}</a>
 			<div id="info">
-				<h1 style="display: inline-block;" id="info-name">{{.name}}</h2>
-					<i>({{a "word.server.info.version"}}: <span id="info-version">{{.version}}</span> )</i><br/>
+				<h1 id="info-name">{{.name}}
+					<i style="font-size: 0.5em;font-weight: 10;">({{a "word.server.info.version"}}: <span id="info-version">{{.version}}</span>)</i>
+				</h1>
 				<p id="info-desc">{{.desc}}</p>
 			</div>
 			<div id="status">
-				<h4>{{a "title.server.status"}}: </h4>
+				<h3>{{a "title.server.status"}}: </h3>
 				<div id="status-box" style="display: none;">
-					<i>{{a "word.server.status.version"}}: <span id="status-version">None</span></i><br/>
+					<div><b>{{a "word.server.status.version"}}: </b><span id="status-version">None</span></div>
 					<div><img id="status-favicon" style="display: none;"/></div>
-					<div>{{a "word.server.status.description"}}: <span id="status-desc" class="status-item">None</span></div>
-					<div>{{a "word.server.status.ip"}}: <span id="status-ip" class="status-item">None</span></div>
-					<div>{{a "word.server.status.ping"}}: <span id="status-ping" class="status-item">None</span> ms</div>
-					<div><span id="status-player" class="status-item">{{a "word.server.status.player"}}: 
+					<div><b>{{a "word.server.status.description"}}: </b><span id="status-desc" class="status-item">None</span></div>
+					<div><b>{{a "word.server.status.ip"}}: </b><span id="status-ip" class="status-item">None</span></div>
+					<div><b>{{a "word.server.status.ping"}}: </b><span id="status-ping" class="status-item">None</span> ms</div>
+					<div><span id="status-player" class="status-item"><b>{{a "word.server.status.player"}}: </b>
 						(<span id="status-player_count">None</span>/<span id="status-player_max_count">None</span>) 
 						<ul id="status-players"></ul>
 					</span></div>
 				</div>
 				<div id="status-error">{{a "word.server.status.loading"}}</div>
 			</div>
-			<div id="info-readme"></div>
+			<div id="info-readme">
+				<article class="markdown-body">{{.readme | noesc}}</article>
+			</div>
 		</div>
 
 		<script type="text/javascript" src="/static/lib/jquery-3.6.0.min.js"></script>

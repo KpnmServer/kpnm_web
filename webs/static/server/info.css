@@ -1,34 +1,45 @@
 
-*{
-	margin: 0;
-	padding: 0;
-}
-
 #body{
 	display: flex;
-	padding: 10px;
+	padding: 1.6rem;
 	flex-direction: column;
 	align-items: center;
 }
 
+#info{
+	width: 90%;
+	margin-bottom: 2rem;
+}
+
 #info-desc{
-	margin-left: 10px;
+	font-size: 0.9em;
+	font-weight: 100;
+	margin-left: 2em;
 	color: #999999;
 }
 
 #info-readme{
-	width: 45rem;
-	margin: 2rem auto;
-	padding: 0.7rem;
+	width: min(calc(100% - 3.8rem), 80%);
+	display: block;
+	margin-top: 2rem;
 	border: #aaaaaa 1px solid;
 	border-radius: 0.7rem;
 }
 
 #status{
-	width: 28rem;
+	width: min(calc(100% - 3.8rem), 28rem, 80%);
 	padding: 0.7rem;
 	border: #aaaaaa 1px solid;
 	border-radius: 0.7rem;
+}
+
+#status>h3:first-child{
+	margin-bottom: 0.7em;
+}
+
+#status-box>div{
+	margin-bottom: 0.3em;
+	padding-left: 0.6em;
 }
 
 #status-favicon{

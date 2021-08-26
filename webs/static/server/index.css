@@ -1,12 +1,7 @@
 
-*{
-	margin: 0;
-	padding: 0;
-}
-
 #server-box{
-	width: 40rem;
-	margin: auto;
+	width: min(43rem, 80%);
+	margin: 0 auto;
 	margin-top: 5rem;
 	padding: 0.65rem;
 	border: #aaaaaa 1px solid;

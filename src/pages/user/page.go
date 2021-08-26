@@ -2,8 +2,6 @@
 package page_user
 
 import (
-	// http "net/http"
-
 	iris "github.com/kataras/iris/v12"
 	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
 )
@@ -19,11 +17,11 @@ func UserIndexPage(ctx iris.Context){
 	})
 }
 
-func SetLoginPage(ctx iris.Context){
+func LoginPage(ctx iris.Context){
 	ctx.View("index.html")
 }
 
-func SetRegistePage(ctx iris.Context){
+func RegistePage(ctx iris.Context){
 	ctx.View("index.html")
 }
 
@@ -31,7 +29,8 @@ func SetRegistePage(ctx iris.Context){
 func init(){page_mnr.Register("/user", "./webs/user", func(group iris.Party){
 	group.Get("/", IndexPage)
 	group.Get("/{user:string}", UserIndexPage)
-	group.Get("/setting/login", SetLoginPage)
-	group.Get("/setting/registe", SetRegistePage)
+	group.Get("/setting/login", LoginPage)
+	group.Get("/setting/registe", RegistePage)
+	InitApi(group)
 })}
 
