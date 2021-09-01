@@ -62,7 +62,7 @@ func GetServerInfo(name string)(svr *ServerInfo, err error){
 	return cache.info, nil
 }
 
-func SetServerInfo(svr *ServerInfo)(err error){
+func (svr *ServerInfo)Save()(err error){
 	delete(SERVER_CACHE, svr.Name)
 	ufile.CreateDir(ufile.JoinPathWithoutAbs(SERVER_DATA_PATH, svr.Name))
 	path := ufile.JoinPathWithoutAbs(SERVER_DATA_PATH, svr.Name, "info.json")

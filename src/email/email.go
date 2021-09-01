@@ -7,8 +7,10 @@ import (
 	email "github.com/KpnmServer/go-util/email"
 	ufile "github.com/KpnmServer/go-util/file"
 	json "github.com/KpnmServer/go-util/json"
+	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
 )
 
+type Map = map[string]interface{}
 
 var svrmail *email.Email
 
@@ -37,11 +39,19 @@ func init(){
 		}
 
 		host := obj.GetString("host")
-		port := obj.GetInt("host")
+		port := obj.GetInt("port")
 		addr := obj.GetString("addr")
 		pwd := obj.GetString("pwd")
 
 		svrmail = email.NewEmail(host, port, addr, pwd)
+		err = svrmail.Login()
+		if err != nil {
+			panic(err)
+		}
+		page_mnr.RegisterClose(func(){
+			svrmail.Close()
+		})
 	}
+	email.LoadTemplateDir("emails")
 }
 

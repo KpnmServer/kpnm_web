@@ -2,6 +2,8 @@
 	"title.minecraft.web": "Minecraft网站",
 	"title.minecraft.server.list": "Minecraft服务器列表",
 	"title.server.status": "服务器状态",
+	"title.user.register": "注册",
+	"title.user.login": "登录",
 
 	"word.message.back": "回到",
 	"word.server.info.version": "服务器版本",
@@ -11,6 +13,28 @@
 	"word.server.status.ping": "延迟",
 	"word.server.status.player": "玩家列表",
 	"word.server.status.loading": "加载中, 请稍后...",
+	"word.user.email": "邮箱",
+	"word.user.name": "用户名",
+	"word.user.password": "密码",
+	"word.user.password2": "2次密码",
+	"word.register": "注册",
+	"word.login": "登录",
+	"word.email.send": "发送验证码",
+	"word.email.verify": "验证邮箱",
 
-	"description.web.server.index": "Minecraft服务器列表, 你可以在此找到Minecraft服务器并实时查看它们的状态"
+	"message.email.input": "请输入您的邮箱",
+	"message.name.input": "请输入您的用户名",
+	"message.password.input": "请输入您的密码",
+	"message.password2.input": "请再次输入您的密码",
+	"message.captcha.get": "点击刷新验证码",
+	"message.captcha.input": "图片验证码",
+	"message.email.captcha.input": "邮件验证码",
+	"message.user.register.email.e": "不是合法邮箱",
+	"message.user.register.name.e": "用户名需以字母开头,仅能含有英文字母和标点数字,长度2-32",
+	"message.user.register.password.e": "密码需以字母开头,仅能含有英文字母和标点数字,长度8-128",
+	"message.user.register.password2.e": "两次密码不一致",
+	"message.user.login.name.e": "用户名不合法",
+	"message.user.login.password.e": "密码不合法",
+
+	"description.web.server.index": "Minecraft服务器列表, 您可以在此找到Minecraft服务器并实时查看它们的状态"
 }

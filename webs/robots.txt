@@ -1,6 +1,9 @@
 
 User-agent: *
 
-Disallow: /user/settings/
+Disallow: /user/login
+Disallow: /user/register
+Disallow: /user/setting/
+Disallow: /user/api/
 
 

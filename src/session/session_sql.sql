@@ -1,6 +1,4 @@
 
-CREATE DATABASE kpnmdb;
-
 USE kpnmdb;
 
 CREATE TABLE sessions (

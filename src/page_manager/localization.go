@@ -3,6 +3,7 @@ package kweb_manager
 
 import (
 	os "os"
+	fmt "fmt"
 	strings "strings"
 
 	iris "github.com/kataras/iris/v12"
@@ -120,9 +121,14 @@ func (imap *I18nMap)GetLocalLang()(string){
 	return imap.localLang
 }
 
-func (imap *I18nMap)Localization(id string)(local string){
+func (imap *I18nMap)Localization(id string, argv ...interface{})(local string){
+	var ok bool = false
+	defer func(){
+		if ok {
+			local = fmt.Sprintf(local, argv...)
+		}
+	}()
 	id = strings.ToLower(id)
-	var ok bool
 	local, ok = imap.localAreaMap.localMap[id]
 	if ok {
 		return
@@ -136,7 +142,8 @@ func (imap *I18nMap)Localization(id string)(local string){
 	if ok {
 		return
 	}
-	return id
+	local = id
+	return
 }
 
 func LocalHandle(i18nmap *I18nMap)(iris.Handler){

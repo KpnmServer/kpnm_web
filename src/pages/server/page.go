@@ -35,7 +35,7 @@ func ServerPage(ctx iris.Context){
 	name := ctx.Params().Get("name")
 	svr, err := GetServerInfo(name)
 	if err != nil {
-		page_mnr.LOGGER.Debugf("Get server \"%s\" error: %v", name, err)
+		ctx.Application().Logger().Debugf("Get server \"%s\" error: %v", name, err)
 		ctx.StatusCode(iris.StatusNotFound)
 		return
 	}
@@ -73,13 +73,13 @@ func StatusPagePost(ctx iris.Context){
 	for _, addr := range svr.Addrs {
 		host = addr.GetString(0)
 		port = addr.GetUInt16(1)
-		page_mnr.LOGGER.Debugf("Pinging \"%s:%d\"", host, port)
+		ctx.Application().Logger().Debugf("Pinging \"%s:%d\"", host, port)
 		status, err = mc_util.Ping(host, port)
 		if err == nil {
-			page_mnr.LOGGER.Debugf("Ping \"%s:%d\" success", host, port)
+			ctx.Application().Logger().Debugf("Ping \"%s:%d\" success", host, port)
 			break
 		}
-		page_mnr.LOGGER.Debugf("Ping \"%s:%d\" failed: %v", host, port, err)
+		ctx.Application().Logger().Debugf("Ping \"%s:%d\" failed: %v", host, port, err)
 	}
 	if err != nil {
 		ctx.JSON(iris.Map{

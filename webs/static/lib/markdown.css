@@ -57,6 +57,15 @@
     padding: 0 1em;
 }
 
+.markdown-body del{
+	text-decoration: line-through;
+}
+
+.markdown-body del::before, .markdown-body del::after{
+	content: " ";
+	white-space: pre;
+}
+
 .markdown-body h1, .markdown-body h2, .markdown-body h3,
 .markdown-body h4, .markdown-body h5, .markdown-body h6{
 	font-weight: 600;

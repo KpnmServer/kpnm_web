@@ -9,11 +9,12 @@ import (
 	iris "github.com/kataras/iris/v12"
 )
 
-var JWT_ENCODER jwt.Encoder = jwt.NewAutoEncoder(60 * 60 * 24 * 23, 2048)
+var JWT_ENCODER jwt.Encoder = jwt.NewAutoEncoder(
+	jwt.NewFileEncoder(jwt.NewEncoder(nil), "keys/session_jwt.key"), 2048, 60 * 60 * 24 * 23)
 
 func GetCtxUuid(ctx iris.Context)(id uuid.UUID){
 	if uidtk, err := JWT_ENCODER.Decode(ctx.GetCookie("sesid")); err == nil {
-		if id, err = uuid.Parse(uidtk["v"]); err == nil {
+		if id, err = uuid.Parse(uidtk["v"].(string)); err == nil {
 			if (int64)(uidtk["iat"].(float64)) <= time.Now().Unix() + 60 * 60 * 24 * 7 {
 				nid := uuid.New()
 				if _, err = ChangeUUID(id, nid); err == nil {

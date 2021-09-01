@@ -34,14 +34,17 @@
 						<ul id="status-players"></ul>
 					</span></div>
 				</div>
-				<div id="status-error">{{a "word.server.status.loading"}}</div>
+				<div id="status-error">
+					<span id="status-error-text" style="display: none;"></span>
+					<span id="status-error-loading">{{a "word.server.status.loading"}}</span>
+				</div>
 			</div>
 			<div id="info-readme">
 				<article class="markdown-body">{{.readme | noesc}}</article>
 			</div>
 		</div>
 
-		<script type="text/javascript" src="/static/lib/jquery-3.6.0.min.js"></script>
+		<script type="text/javascript" src="/static/lib/jquery-3.6.0.min.js" type="module"></script>
 		<script type="text/javascript" src="/static/server/info.js"></script>
 	</body>
 </html>

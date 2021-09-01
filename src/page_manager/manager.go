@@ -7,6 +7,7 @@ import (
 	htmltmpl "html/template"
 
 	iris "github.com/kataras/iris/v12"
+	router "github.com/kataras/iris/v12/core/router"
 )
 
 type pageInfo struct{
@@ -16,6 +17,7 @@ type pageInfo struct{
 }
 
 var _PAGES = make([]*pageInfo, 0)
+var _CLOSE_HANDLES = make([]func(), 0)
 
 func RegisterHTML(group iris.Party, path string){
 	tmpl := iris.HTML(path, ".html")
@@ -48,9 +50,10 @@ func InitAll(app *iris.Application, initGroup func(iris.Party)){
 	}
 }
 
-func RegisterStatic(group iris.Party, route string, path string, reload bool){
+func ServeStatic(group iris.Party, route string, path string, reload bool){
+	var router *router.Route
 	if reload {
-		group.Get(route, func(ctx iris.Context){
+		router = group.Get(route, func(ctx iris.Context){
 			var fd *os.File
 			var err error
 			fd, err = os.Open(path)
@@ -78,9 +81,25 @@ func RegisterStatic(group iris.Party, route string, path string, reload bool){
 				group.Logger().Errorf("Register static file error: %v", err)
 				return
 		}
-		group.Get(route, func(ctx iris.Context){
+		router = group.Get(route, func(ctx iris.Context){
 			ctx.Write(data)
 		})
 	}
+	router.ExcludeSitemap()
 }
 
+func NoSitemap(routes ...*router.Route){
+	for _, r := range routes {
+		r.ExcludeSitemap()
+	}
+}
+
+func RegisterClose(call func()){
+	_CLOSE_HANDLES = append(_CLOSE_HANDLES, call)
+}
+
+func OnClose(){
+	for _, h := range _CLOSE_HANDLES {
+		h()
+	}
+}

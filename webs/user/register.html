@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang='{{getlang}}'>
+	<head>
+		<title>{{a "title.user.register"}}</title>
+		<link rel="stylesheet" type="text/css" href="/static/lib/global.css">
+		<link rel="stylesheet" type="text/css" href="/static/lib/animations.css">
+		<link rel="stylesheet" type="text/css" href="/static/user/register.css">
+	</head>
+	<body>
+		<div id="body">
+			<div id="register">
+				<div id="register-email" class="register-content">
+					<p>
+						{{a "word.user.email"}}:
+						<input id="register-email-input" type="text" placeholder='{{a "message.email.input"}}' />
+					</p>
+					<span id="register-email-error" class="error-box" style="display: none;">{{a "message.user.register.email.e"}}</span>
+				</div>
+				<div id="register-username" class="register-content">
+					<p>
+						{{a "word.user.name"}}:
+						<input id="register-username-input" type="text" placeholder='{{a "message.name.input"}}' />
+					</p>
+					<span id="register-username-error" class="error-box" style="display: none;">{{a "message.user.register.name.e"}}</span>
+				</div>
+				<div id="register-password" class="register-content">
+					<p>
+						{{a "word.user.password"}}:
+						<input id="register-password-input" type="password" placeholder='{{a "message.password.input"}}' />
+					</p>
+					<span id="register-password-error" class="error-box" style="display: none;">{{a "message.user.register.password.e"}}</span>
+				</div>
+				<div id="register-pwdagain" class="register-content">
+					<p>
+						{{a "word.user.password2"}}:
+						<input id="register-pwdagain-input" type="password" placeholder='{{a "message.password2.input"}}' />
+					</p>
+					<span id="register-pwdagain-error" class="error-box" style="display: none;">{{a "message.user.register.password2.e"}}</span>
+				</div>
+				<div id="register-error" class="error-box" style="display: none;"></div>
+				<input id="register-submit" type="button" value='{{a "word.register"}}' />
+			</div>
+			<div id="verify-email" style="display: none;">
+				<div>
+					<center>{{a "word.user.email"}}: <b id="verify-email-addr"></b></center>
+					<button id="back-user-setting">Back</button>
+				</div>
+				<div id="verify-captcha" class="register-content">
+					<p>
+						<img id="verify-captcha-img" alt='{{a "message.captcha.get"}}' />
+						<input id="verify-captcha-input" type="text" placeholder='{{a "message.captcha.input"}}' />
+					</p>
+					<span id="verify-captcha-error" class="error-box" style="display: none;"></span>
+				</div>
+				<div id="verify-email-captcha" class="register-content">
+					<p>
+						<input id="verify-email-captcha-input" type="text" placeholder='{{a "message.email.captcha.input"}}' />
+						<button id="verify-email-send">{{a "word.email.send"}}</button>
+					</p>
+					<span id="verify-email-captcha-error" class="error-box" style="display: none;"></span>
+				</div>
+				<div id="verify-error" class="error-box" style="display: none;"></div>
+				<input id="verify-email-submit" type="button" value='{{a "word.email.verify"}}' />
+			</div>
+			<p style="margin-top: 30px; text-align: center; font-size: 18px;">
+				Already have user? Go <a href="/user/login">{{a "word.login"}}</a>
+			</p>
+		</div>
+		<script type="text/javascript" src="/static/lib/jquery-3.6.0.min.js"></script>
+		<script type="text/javascript" src="/static/user/register.js"></script>
+	</body>
+</html>

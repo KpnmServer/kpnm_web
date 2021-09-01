@@ -2,6 +2,8 @@
 	"title.minecraft.web": "The web for Minecraft",
 	"title.minecraft.server.list": "Minecraft server list",
 	"title.server.status": "Server status",
+	"title.user.register": "Register",
+	"title.user.login": "Login",
 
 	"word.message.back": "back to",
 	"word.server.info.version": "version",
@@ -11,6 +13,22 @@
 	"word.server.status.ping": "Ping",
 	"word.server.status.player": "Player list",
 	"word.server.status.loading": "Loading please wait...",
+	"word.user.email": "Email",
+	"word.user.name": "Username",
+	"word.user.password": "Password",
+	"word.user.password2": "Pwd again",
+	"word.register": "Register",
+	"word.login": "Login",
+	"word.email.send": "Send captcha",
+	"word.email.verify": "Verify email",
+
+	"message.email.input": "Your email",
+	"message.name.input": "Your user name",
+	"message.password.input": "Your password",
+	"message.password2.input": "Your password again",
+	"message.captcha.get": "Click to refresh captcha",
+	"message.captcha.input": "Image captcha code",
+	"message.email.captcha.input": "Email captcha code",
 
 	"description.web.server.index": "Minecraft server list, you can find minecraft servers and Monitor them status on here"
 }

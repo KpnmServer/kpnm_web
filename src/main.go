@@ -2,12 +2,15 @@
 package main
 
 import (
+	context "context"
 	os "os"
+	signal "os/signal"
+	syscall "syscall"
 	time "time"
 	fmt "fmt"
+	strings "strings"
 
 	iris "github.com/kataras/iris/v12"
-	accesslog "github.com/kataras/iris/v12/middleware/accesslog"
 
 	ufile "github.com/KpnmServer/go-util/file"
 	json "github.com/KpnmServer/go-util/json"
@@ -29,6 +32,7 @@ var (
 var app *iris.Application
 
 func init(){
+	var langfiles []string
 	{ // read config file
 		var fd *os.File
 		var err error
@@ -49,31 +53,59 @@ func init(){
 			CRT_FILE = obj.GetString("crt_file")
 			KEY_FILE = obj.GetString("key_file")
 		}
+		langfiles = obj.GetStrings("languages")
 	}
 	app = NewApp()
 	page_mnr.APPLICATION = app
 	page_mnr.LOGGER = app.Logger()
 
-	page_mnr.GLOBAL_I18N_MAP.LoadLanguage("en-us", ufile.JoinPath("language", "en-us", "lang.json"))
-	page_mnr.GLOBAL_I18N_MAP.LoadLanguage("zh-cn", ufile.JoinPath("language", "zh-cn", "lang.json"))
+	for _, item := range langfiles {
+		i := strings.IndexByte(item, ':')
+		if i == -1 {
+			app.Logger().Errorf("Format error: '%s'", item)
+			continue
+		}
+		page_mnr.GLOBAL_I18N_MAP.LoadLanguage(item[:i], item[i + 1:])
+	}
 }
 
 func main(){
+	defer func(){
+		page_mnr.OnClose()
+	}()
+
 	page_mnr.RegisterHTML(app, "./webs/globals")
-	app.Favicon("./webs/static/favicon.ico")
-	page_mnr.RegisterStatic(app, "/robots.txt", "./webs/robots.txt", false)
-	page_mnr.RegisterStatic(app, "/sitemap.xml", "./webs/sitemap.xml", true)
-	page_mnr.RegisterStatic(app, "/google9aa38deb43e89452.html", "./google9aa38deb43e89452.html", false)
-	app.HandleDir("/static", iris.Dir("./webs/static"))
+	page_mnr.NoSitemap(app.Favicon("./webs/static/favicon.ico"))
+	page_mnr.ServeStatic(app, "/robots.txt", "./webs/robots.txt", false)
+	page_mnr.ServeStatic(app, "/google9aa38deb43e89452.html", "./google9aa38deb43e89452.html", false)
+	page_mnr.NoSitemap(app.HandleDir("/static", iris.Dir("./webs/static"))...)
 
 	registerErrorPages(app)
 	page_mnr.InitAll(app, func(group iris.Party){})
 
+	page_mnr.BindSiteMap(app, "https://kpnm.waerba.com")
+
 	ipaddr := fmt.Sprintf("%s:%d", "0.0.0.0", PORT)
-	if USE_HTTPS {
-		app.Run(iris.TLS(ipaddr, CRT_FILE, KEY_FILE))
-	}else{
-		app.Run(iris.Addr(ipaddr))
+
+	go func(){
+		var runner iris.Runner
+		if USE_HTTPS {
+			runner = iris.TLS(ipaddr, CRT_FILE, KEY_FILE)
+		}else{
+			runner = iris.Addr(ipaddr)
+		}
+		app.Run(runner)
+	}()
+
+	bgcont := context.Background()
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+
+	select {
+	case <-sigs:
+		timeoutCtx, _ := context.WithTimeout(bgcont, 16 * time.Second)
+		app.Logger().Warn("Closing server...")
+		app.Shutdown(timeoutCtx)
 	}
 }
 
@@ -112,15 +144,30 @@ func bindLogger(app *iris.Application){
 			}
 		})
 	})
-	app.UseRouter(accesslog.New(ufile.HandleWriter(func(bts []byte)(int, error){
-		app.Logger().Info(string(bts))
-		return len(bts), nil
-	})).SetFormatter(&accesslog.Template{
-		Text: "[{{.IP}} {{.Method}} {{.Code}} {{.Latency}}]:{{.Path}}:|{{.RequestValuesLine}} |{{.Request}} |{{.Response}}",
-	}).Handler)
+	app.UseRouter(func(ctx iris.Context){
+		request := ctx.Request()
+		var (
+			ipaddr string = request.RemoteAddr
+			method string = request.Method
+			code int
+			startTime time.Time
+			useTime time.Duration
+			path string = ctx.RequestPath(true)
+			query string = request.URL.RawQuery
+		)
+		startTime = time.Now()
+		ctx.Next()
+		useTime = time.Since(startTime)
+		code = ctx.GetStatusCode()
+
+		if rip, ok := request.Header["X-Real-Ip"]; ok && len(rip) > 0 {
+			ipaddr = rip[0]
+		}
+		ctx.Application().Logger().Infof("[%s %s %d %v]:%s:%s", ipaddr, method, code, useTime, path, query)
+	})
 
 	changeLogFileFunc := func(){
-		logf, err := os.OpenFile("./logs/" + time.Now().Format("20060102-15.log"),
+		logf, err := os.OpenFile("logs/" + time.Now().Format("20060102-15.log"),
 			os.O_CREATE | os.O_WRONLY | os.O_APPEND | os.O_SYNC, os.ModePerm)
 		if err != nil {
 			app.Logger().Errorf("Create log file error: %s", err.Error())
@@ -128,6 +175,13 @@ func bindLogger(app *iris.Application){
 		}
 		if logFile != nil {
 			logFile.Close()
+			logstat, err := logFile.Stat()
+			if err == nil {
+				logsize := logstat.Size()
+				if logsize == 0 {
+					os.Remove(logFile.Name())
+				}
+			}
 		}
 		logFile = logf
 		app.Logger().Printer.SetOutput(os.Stdout, logFile)

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang='{{getlang}}'>
+	<head>
+		<title>{{a "title.user.login"}}</title>
+		<link rel="stylesheet" type="text/css" href="/static/lib/global.css">
+		<link rel="stylesheet" type="text/css" href="/static/lib/animations.css">
+		<link rel="stylesheet" type="text/css" href="/static/user/login.css">
+	</head>
+	<body>
+		<div id="body">
+			<div id="login">
+				<div id="login-username" class="login-content">
+					<p>
+						{{a "word.user.name"}}:
+						<input id="login-username-input" type="text" placeholder='{{a "message.name.input"}}' />
+					</p>
+					<span id="login-username-error" class="error-box" style="display: none;">{{a "message.user.login.name.e"}}</span>
+				</div>
+				<div id="login-password" class="login-content">
+					<p>
+						{{a "word.user.password"}}:
+						<input id="login-password-input" type="password" placeholder='{{a "message.password.input"}}' />
+					</p>
+					<span id="login-password-error" class="error-box" style="display: none;">{{a "message.user.login.password.e"}}</span>
+				</div>
+				<div id="login-captcha" class="login-content">
+					<p>
+						<img id="login-captcha-img" alt='{{a "message.captcha.get"}}' />
+						<input id="login-captcha-input" type="text" placeholder='{{a "message.captcha.input"}}' />
+					</p>
+					<span id="login-captcha-error" class="error-box" style="display: none;"></span>
+				</div>
+				<div id="login-error" class="error-box" style="display: none;"></div>
+				<input id="login-submit" type="button" value='{{a "word.login"}}' />
+			</div>
+			<p style="margin-top: 30px; text-align: center; font-size: 18px;">
+				Don't have user? Please <a href="/user/register">{{a "word.register"}}</a>
+			</p>
+		</div>
+		<script type="text/javascript" src="/static/lib/jquery-3.6.0.min.js"></script>
+		<script type="text/javascript" src="/static/user/login.js"></script>
+	</body>
+</html>
