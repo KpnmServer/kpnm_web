@@ -6,7 +6,7 @@ import (
 
 	uuid "github.com/google/uuid"
 	kpsql "github.com/KpnmServer/go-kpsql"
-	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
+	sql_mnr "github.com/KpnmServer/kpnm_web/src/sql"
 )
 
 type Session struct{
@@ -16,7 +16,7 @@ type Session struct{
 	Overtime time.Time `sql:"overtime"`
 }
 
-var SESSION_SQL_TABLE kpsql.SqlTable = page_mnr.SQLDB.GetTable("sessions", &Session{})
+var SESSION_SQL_TABLE kpsql.SqlTable = sql_mnr.SQLDB.GetTable("sessions", &Session{})
 
 var (
 	last_clean_time int64 = 0

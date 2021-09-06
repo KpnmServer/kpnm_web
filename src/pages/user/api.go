@@ -9,6 +9,7 @@ import (
 	kpsql "github.com/KpnmServer/go-kpsql"
 	kses "github.com/KpnmServer/kpnm_web/src/session"
 	kcapt "github.com/KpnmServer/kpnm_web/src/captchaimg"
+	kuser "github.com/KpnmServer/kpnm_web/src/user"
 )
 
 var (
@@ -38,12 +39,12 @@ func UserLoginApi(ctx iris.Context){
 		return
 	}
 	username := ctx.PostValue("user")
-	var user *UserData
+	var user *kuser.UserData
 	switch {
 	case reg_email.MatchString(username):
-		user = GetUserDataByEmail(username)
+		user = kuser.GetUserDataByEmail(username)
 	case reg_name.MatchString(username):
-		user = GetUserDataByName(username)
+		user = kuser.GetUserDataByName(username)
 	default:
 		ctx.JSON(iris.Map{
 			"status": "error",
@@ -71,11 +72,15 @@ func UserLoginApi(ctx iris.Context){
 		return
 	}
 
-	err := kses.NewSession(uid, "loginuser", user.Id.String()).Save()
+	live_time := kuser.LOG_LIVE_MAX_TIME
+	if ctx.PostValue("live") != "T" {
+		// live_time = 0
+	}
+	err := user.SaveCtxLog(ctx, live_time)
 	if err != nil {
 		ctx.JSON(iris.Map{
 			"status": "error",
-			"error": "SqlInsertError",
+			"error": "SaveCtxLogError",
 			"errorMessage": err.Error(),
 		})
 		return
@@ -84,11 +89,7 @@ func UserLoginApi(ctx iris.Context){
 }
 
 func UserLogoutApi(ctx iris.Context){
-	uid := kses.GetCtxUuid(ctx)
-	loguser := kses.GetSession(uid, "loginuser")
-	if loguser != nil {
-		loguser.Delete()
-	}
+	kses.DelCtxUuid(ctx)
 	ctx.StatusCode(iris.StatusNoContent)
 }
 
@@ -110,13 +111,13 @@ func VerifyEmailApi(ctx iris.Context){
 		vf.Delete()
 	}
 	code := ctx.PostValue("code")
-	emailtk, ok := verifyMailCode(uid, code)
+	emailtk, ok := kuser.VerifyMailCode(uid, code)
 	if !ok {
 		err := kses.NewSession(uid, "verify_flag", "true").Save()
 		if err != nil {
 			ctx.JSON(iris.Map{
 				"status": "error",
-				"error": "SqlInsertError",
+				"error": "SaveSessionError",
 				"errorMessage": err.Error(),
 			})
 			return
@@ -157,7 +158,7 @@ func SendVerifyEmailApi(ctx iris.Context){
 		})
 		return
 	}
-	err := sendVerifyMail(uid, email)
+	err := kuser.SendVerifyMail(uid, email)
 	if err != nil {
 		ctx.JSON(iris.Map{
 			"status": "error",
@@ -170,7 +171,7 @@ func SendVerifyEmailApi(ctx iris.Context){
 }
 
 func UserRegisterApi(ctx iris.Context){
-	email, ok := checkUserEmailToken(ctx.PostValue("emailtk"))
+	email, ok := kuser.CheckUserEmailToken(ctx.PostValue("emailtk"))
 	if !ok {
 		ctx.JSON(iris.Map{
 			"status": "error",
@@ -197,12 +198,12 @@ func UserRegisterApi(ctx iris.Context){
 		})
 		return
 	}
-	user := NewUser(name, password, email, "")
+	user := kuser.NewUser(name, password, email, "")
 	err := user.InsertData()
 	if err != nil {
 		ctx.JSON(iris.Map{
 			"status": "error",
-			"error": "SqlInsertError",
+			"error": "InsertUserError",
 			"errorMessage": err.Error(),
 		})
 		return
@@ -221,7 +222,7 @@ func UserRegcheckApi(ctx iris.Context){
 		})
 		return
 	}
-	if n, _ := USER_SQL_TABLE.Count(kpsql.WhereMap{{"email", "=", email, ""}}, 1); n == 1 {
+	if n, _ := kuser.USER_SQL_TABLE.Count(kpsql.WhereMap{{"email", "=", email, ""}}, 1); n == 1 {
 		ctx.JSON(iris.Map{
 			"status": "error",
 			"error": "UserExistError",
@@ -238,7 +239,7 @@ func UserRegcheckApi(ctx iris.Context){
 		})
 		return
 	}
-	if n, _ := USER_SQL_TABLE.Count(kpsql.WhereMap{{"username", "=", name, ""}}, 1); n == 1 {
+	if n, _ := kuser.USER_SQL_TABLE.Count(kpsql.WhereMap{{"username", "=", name, ""}}, 1); n == 1 {
 		ctx.JSON(iris.Map{
 			"status": "error",
 			"error": "UserExistError",

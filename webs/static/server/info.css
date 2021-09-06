@@ -1,7 +1,7 @@
 
 #body{
 	display: flex;
-	padding: 1.6rem;
+	padding: min(1.6rem, 6%);
 	flex-direction: column;
 	align-items: center;
 }
@@ -19,7 +19,7 @@
 }
 
 #info-readme{
-	width: min(calc(100% - 3.8rem), 80%);
+	width: 94%;
 	display: block;
 	margin-top: 2rem;
 	border: #aaaaaa 1px solid;
@@ -27,7 +27,7 @@
 }
 
 #status{
-	width: min(calc(100% - 3.8rem), 28rem, 80%);
+	width: min(28rem, 94%);
 	padding: 0.7rem;
 	border: #aaaaaa 1px solid;
 	border-radius: 0.7rem;
@@ -66,5 +66,5 @@
 
 #status-error::after{
 	content: "\A(Please contact the server administrator)";
-	white-space: pre;
+	white-space: break-spaces;
 }

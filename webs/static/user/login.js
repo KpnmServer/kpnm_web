@@ -83,7 +83,7 @@ $(document).ready(function(){
 				capterrbox.hide();
 				errorbox.hide();
 				if(res.status === "ok"){
-					window.location.replace('/user');
+					window.location.replace('/');
 					return;
 				}
 				if(res.status === "error"){

@@ -1,5 +1,5 @@
 
-package page_user
+package kweb_user
 
 import (
 	time "time"
@@ -11,7 +11,7 @@ import (
 	kpsql "github.com/KpnmServer/go-kpsql"
 	kses "github.com/KpnmServer/kpnm_web/src/session"
 	kmail "github.com/KpnmServer/kpnm_web/src/email"
-	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
+	sql_mnr "github.com/KpnmServer/kpnm_web/src/sql"
 )
 
 var JWT_ENCODER jwt.Encoder = jwt.NewAutoEncoder(jwt.NewEncoder(nil), 2048, 60 * 60 * 24)
@@ -25,7 +25,7 @@ type UserData struct{
 	Desc string        `sql:"description"`
 }
 
-var USER_SQL_TABLE kpsql.SqlTable = page_mnr.SQLDB.GetTable("users", &UserData{})
+var USER_SQL_TABLE kpsql.SqlTable = sql_mnr.SQLDB.GetTable("users", &UserData{})
 
 func NewUser(name string, password string, email string, desc string)(*UserData){
 	return &UserData{
@@ -89,7 +89,10 @@ func (user *UserData)InsertData()(err error){
 
 var MAIL_CODE_LIVE_TIME = time.Second * 60 * 5
 
-func sendVerifyMail(sesid uuid.UUID, email string)(err error){
+var CODE_BASE []byte = ([]byte)("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+var CODE_LEN int = 6
+
+func SendVerifyMail(sesid uuid.UUID, email string)(err error){
 	mailc := kses.GetSession(sesid, "mailc")
 	if mailc != nil {
 		vmail := kses.GetSession(sesid, "vmail")
@@ -98,11 +101,11 @@ func sendVerifyMail(sesid uuid.UUID, email string)(err error){
 		}
 	}
 	if mailc == nil {
-		var code []byte = make([]byte, 6)
+		var code []byte = make([]byte, CODE_LEN)
 		_, err = crand.Read(code)
 		if err != nil { return }
 		for i, _ := range code {
-			code[i] = '0' + code[i] % 10
+			code[i] = CODE_BASE[code[i] % (byte)(len(CODE_BASE))]
 		}
 		mailc = kses.NewSession(sesid, "mailc", (string)(code), MAIL_CODE_LIVE_TIME)
 		err = mailc.Save()
@@ -110,14 +113,14 @@ func sendVerifyMail(sesid uuid.UUID, email string)(err error){
 		err = kses.NewSession(sesid, "vmail", email, MAIL_CODE_LIVE_TIME).Save()
 		if err != nil { return }
 	}
-	err = kmail.SendHtml(email, "Verify your email address", "verify-email.html", kmail.Map{
+	err = kmail.SendHtml(email, "Verify your email address", "register-verify.html", kmail.Map{
 		"addr": email,
 		"code": mailc.Value,
 	})
 	return
 }
 
-func verifyMailCode(sesid uuid.UUID, code string)(tk string, ok bool){
+func VerifyMailCode(sesid uuid.UUID, code string)(tk string, ok bool){
 	vmail := kses.GetSession(sesid, "vmail")
 	mailc := kses.GetSession(sesid, "mailc")
 	if vmail == nil || mailc == nil {
@@ -131,7 +134,7 @@ func verifyMailCode(sesid uuid.UUID, code string)(tk string, ok bool){
 	return JWT_ENCODER.Encode(jwt.SetOutdate(jwt.Json{"email": vmail.Value}, time.Minute * 15)), true
 }
 
-func checkUserEmailToken(token string)(email string, ok bool){
+func CheckUserEmailToken(token string)(email string, ok bool){
 	obj, err := JWT_ENCODER.Decode(token)
 	if err != nil {
 		return "", false

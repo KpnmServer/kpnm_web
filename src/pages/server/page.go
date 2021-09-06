@@ -104,6 +104,6 @@ func StatusPagePost(ctx iris.Context){
 func init(){page_mnr.Register("/server", "./webs/server", func(group iris.Party){
 	group.Get("/", IndexPage)
 	group.Get("/{name:string}", ServerPage)
-	group.Get("/{name:string}/status", StatusPagePost)
+	group.Get("/{name:string}/status", page_mnr.SkipLogHandle, StatusPagePost)
 })}
 

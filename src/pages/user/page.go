@@ -6,19 +6,14 @@ import (
 	uuid "github.com/google/uuid"
 	ufile "github.com/KpnmServer/go-util/file"
 	kses "github.com/KpnmServer/kpnm_web/src/session"
+	kuser "github.com/KpnmServer/kpnm_web/src/user"
 	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
 )
 
 var USER_DATA_PATH string = ufile.JoinPath(page_mnr.DATA_PATH, "user")
 
 func IndexPage(ctx iris.Context){
-	uid := kses.GetCtxUuid(ctx)
-	userid, err := uuid.Parse(kses.GetSessionStr(uid, "loginuser"))
-	if err != nil {
-		ctx.Redirect("/user/login", iris.StatusFound)
-		return
-	}
-	user := GetUserData(userid)
+	user := kuser.GetCtxLog(ctx)
 	if user == nil {
 		ctx.Redirect("/user/login", iris.StatusFound)
 		return
@@ -28,7 +23,7 @@ func IndexPage(ctx iris.Context){
 
 func UserIndexPage(ctx iris.Context){
 	name := ctx.Params().Get("name")
-	user := GetUserDataByName(name)
+	user := kuser.GetUserDataByName(name)
 	if user == nil {
 		ctx.StatusCode(iris.StatusNotFound)
 		return
@@ -41,9 +36,7 @@ func UserIndexPage(ctx iris.Context){
 }
 
 func LoginPage(ctx iris.Context){
-	uid := kses.GetCtxUuid(ctx)
-	userid, err := uuid.Parse(kses.GetSessionStr(uid, "loginuser"))
-	if err == nil && GetUserData(userid) != nil {
+	if kuser.GetCtxLog(ctx) != nil {
 		ctx.Redirect("/user", iris.StatusFound)
 		return
 	}
@@ -61,7 +54,7 @@ func SettingPage(ctx iris.Context){
 		ctx.Redirect("/user/login", iris.StatusFound)
 		return
 	}
-	user := GetUserData(userid)
+	user := kuser.GetUserData(userid)
 	if user == nil {
 		ctx.Redirect("/user/login", iris.StatusFound)
 		return

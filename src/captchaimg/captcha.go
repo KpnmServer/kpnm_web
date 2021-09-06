@@ -8,7 +8,7 @@ import (
 
 	captcha "github.com/dchest/captcha"
 	kpsql "github.com/KpnmServer/go-kpsql"
-	page_mnr "github.com/KpnmServer/kpnm_web/src/page_manager"
+	sql_mnr "github.com/KpnmServer/kpnm_web/src/sql"
 )
 
 const (
@@ -24,7 +24,7 @@ type captchaData struct{
 }
 
 var (
-	sqlCaptTable kpsql.SqlTable = page_mnr.SQLDB.GetTable("captchas", &captchaData{})
+	sqlCaptTable kpsql.SqlTable = sql_mnr.SQLDB.GetTable("captchas", &captchaData{})
 )
 
 func NewCaptcha()(id string, imgdata string, err error){
@@ -73,7 +73,7 @@ func (cst *sqlCaptStore)Get(id string, clear bool)(digits []byte){
 	if clear {
 		cst.sqltb.Delete(kpsql.WhereMap{{"id", "=", id, ""}})
 	}
-	value := capt.(captchaData).Value
+	value := capt.(*captchaData).Value
 	digits = make([]byte, len(value))
 	for i, d := range ([]byte)(value) {
 		if d < '0' || '9' < d {
@@ -86,4 +86,5 @@ func (cst *sqlCaptStore)Get(id string, clear bool)(digits []byte){
 
 func init(){
 	sqlCaptTable.Delete(nil)
+	captcha.SetCustomStore(&sqlCaptStore{sqltb: sqlCaptTable})
 }

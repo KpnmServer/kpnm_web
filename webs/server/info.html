@@ -1,24 +1,24 @@
 <!DOCTYPE HTML>
 <html lang='{{getlang}}'>
 	<head>
-		<meta charset="utf-8">
+		<meta charset="utf-8"/>
 		<title>{{.name}} -KpnmServer</title>
-		<meta name="keywords" content="minecraft,server,mc,{{.name}}">
-		<meta name="description" content="{{.desc}}">
-		<link rel="stylesheet" type="text/css" href="/static/lib/global.css">
-		<link rel="stylesheet" type="text/css" href="/static/server/info.css">
-		<link rel="stylesheet" type="text/css" href="/static/lib/markdown.css">
+		<meta name="keywords" content="minecraft,server,mc,{{.name}}"/>
+		<meta name="description" content="{{.desc}}"/>
+		<meta name="viewport" content="initial-scale=0.75"/>
+		<link rel="stylesheet" type="text/css" href="/static/lib/global.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/server/info.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/lib/markdown.css"/>
 		<script>
 			const SERVER_NAME = "{{.name}}";
 		</script>
 	</head>
 	<body>
 		<div id="body">
-			<a href="/server/">{{a "word.message.back"}} {{a "title.minecraft.server.list"}}</a>
+			<a href="/server/" style="white-space: nowrap;">{{a "word.message.back"}} {{a "title.minecraft.server.list"}}</a>
 			<div id="info">
-				<h1 id="info-name">{{.name}}
-					<i style="font-size: 0.5em;font-weight: 10;">({{a "word.server.info.version"}}: <span id="info-version">{{.version}}</span>)</i>
-				</h1>
+				<h1 id="info-name">{{.name}}</h1>
+				<i style="font-size: 0.7em;">({{a "word.server.info.version"}}: <span id="info-version">{{.version}}</span>)</i>
 				<p id="info-desc">{{.desc}}</p>
 			</div>
 			<div id="status">
@@ -29,10 +29,11 @@
 					<div><b>{{a "word.server.status.description"}}: </b><span id="status-desc" class="status-item">None</span></div>
 					<div><b>{{a "word.server.status.ip"}}: </b><span id="status-ip" class="status-item">None</span></div>
 					<div><b>{{a "word.server.status.ping"}}: </b><span id="status-ping" class="status-item">None</span> ms</div>
-					<div><span id="status-player" class="status-item"><b>{{a "word.server.status.player"}}: </b>
-						(<span id="status-player_count">None</span>/<span id="status-player_max_count">None</span>) 
-						<ul id="status-players"></ul>
-					</span></div>
+					<div>
+						<b>{{a "word.server.status.player"}}: </b>
+						(<span id="status-player_count">None</span>/<span id="status-player_max_count">None</span>)<br/>
+						<span id="status-player" class="status-item"><ul id="status-players"></ul></span>
+					</div>
 				</div>
 				<div id="status-error">
 					<span id="status-error-text" style="display: none;"></span>
@@ -44,7 +45,7 @@
 			</div>
 		</div>
 
-		<script type="text/javascript" src="/static/lib/jquery-3.6.0.min.js" type="module"></script>
+		<script type="text/javascript" src="/static/lib/jquery-3.6.0.min.js"></script>
 		<script type="text/javascript" src="/static/server/info.js"></script>
 	</body>
 </html>

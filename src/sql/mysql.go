@@ -1,5 +1,5 @@
 
-package kweb_manager
+package kweb_sql
 
 import (
 	os "os"
@@ -28,7 +28,6 @@ func init(){
 	var err error
 	{// Read config
 		var fd *os.File
-		var err error
 		fd, err = os.Open(ufile.JoinPath("config", "sql.json"))
 		if err != nil {
 			panic(err)
@@ -54,7 +53,6 @@ func init(){
 		SQLDB, err = kpsql.Open("mysql", dbDSN)
 		if err != nil {
 			panic(err)
-			return
 		}
 		SQLDB.DB().SetMaxOpenConns(128)
 		SQLDB.DB().SetConnMaxLifetime(120 * time.Second)

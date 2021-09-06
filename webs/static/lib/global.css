@@ -13,3 +13,11 @@ a{
 a:hover{
 	text-decoration: underline;
 }
+
+
+.text-nowarp{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+

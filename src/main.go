@@ -70,9 +70,7 @@ func init(){
 }
 
 func main(){
-	defer func(){
-		page_mnr.OnClose()
-	}()
+	defer page_mnr.OnClose()
 
 	page_mnr.RegisterHTML(app, "./webs/globals")
 	page_mnr.NoSitemap(app.Favicon("./webs/static/favicon.ico"))
@@ -87,14 +85,17 @@ func main(){
 
 	ipaddr := fmt.Sprintf("%s:%d", "0.0.0.0", PORT)
 
+	var runner iris.Runner
+	if USE_HTTPS {
+		runner = iris.TLS(ipaddr, CRT_FILE, KEY_FILE)
+	}else{
+		runner = iris.Addr(ipaddr)
+	}
 	go func(){
-		var runner iris.Runner
-		if USE_HTTPS {
-			runner = iris.TLS(ipaddr, CRT_FILE, KEY_FILE)
-		}else{
-			runner = iris.Addr(ipaddr)
+		err := app.Run(runner)
+		if err != nil {
+			app.Logger().Errorf("Error: %v", err)
 		}
-		app.Run(runner)
 	}()
 
 	bgcont := context.Background()
@@ -103,7 +104,7 @@ func main(){
 
 	select {
 	case <-sigs:
-		timeoutCtx, _ := context.WithTimeout(bgcont, 16 * time.Second)
+		timeoutCtx, _ := context.WithTimeout(bgcont, 5 * time.Second)
 		app.Logger().Warn("Closing server...")
 		app.Shutdown(timeoutCtx)
 	}
@@ -128,73 +129,8 @@ func NewApp()(app *iris.Application){
 	app.Logger().Printer.SetSync(true)
 	app.Logger().SetTimeFormat("2006-01-02 15:04:05.000:")
 
-	bindLogger(app)
+	page_mnr.BindLogger(app)
 
 	return
-}
-
-func bindLogger(app *iris.Application){
-	var logFile *os.File
-	ufile.CreateDir("./logs")
-
-	app.ConfigureHost(func(su *iris.Supervisor){
-		su.RegisterOnShutdown(func(){
-			if logFile != nil {
-				logFile.Close()
-			}
-		})
-	})
-	app.UseRouter(func(ctx iris.Context){
-		request := ctx.Request()
-		var (
-			ipaddr string = request.RemoteAddr
-			method string = request.Method
-			code int
-			startTime time.Time
-			useTime time.Duration
-			path string = ctx.RequestPath(true)
-			query string = request.URL.RawQuery
-		)
-		startTime = time.Now()
-		ctx.Next()
-		useTime = time.Since(startTime)
-		code = ctx.GetStatusCode()
-
-		if rip, ok := request.Header["X-Real-Ip"]; ok && len(rip) > 0 {
-			ipaddr = rip[0]
-		}
-		ctx.Application().Logger().Infof("[%s %s %d %v]:%s:%s", ipaddr, method, code, useTime, path, query)
-	})
-
-	changeLogFileFunc := func(){
-		logf, err := os.OpenFile("logs/" + time.Now().Format("20060102-15.log"),
-			os.O_CREATE | os.O_WRONLY | os.O_APPEND | os.O_SYNC, os.ModePerm)
-		if err != nil {
-			app.Logger().Errorf("Create log file error: %s", err.Error())
-			return
-		}
-		if logFile != nil {
-			logFile.Close()
-			logstat, err := logFile.Stat()
-			if err == nil {
-				logsize := logstat.Size()
-				if logsize == 0 {
-					os.Remove(logFile.Name())
-				}
-			}
-		}
-		logFile = logf
-		app.Logger().Printer.SetOutput(os.Stdout, logFile)
-		app.Logger().Debugf("Using \"%s\" to log requests", logFile.Name())
-	}
-	changeLogFileFunc()
-	go func(){
-		for {
-			select{
-			case <-time.After(time.Duration(60 - (time.Now().Unix() / 60) % 60) * time.Minute):
-				changeLogFileFunc()
-			}
-		}
-	}()
 }
 

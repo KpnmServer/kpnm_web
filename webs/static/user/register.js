@@ -77,6 +77,9 @@ function changeToEmailVerify(){
 	$('#verify-email-addr').text(_register_data["email"]);
 	$('#register').hide();
 	$('#verify-email').show();
+	let vci = $("#verify-captcha-input");
+	vci.val('');
+	vci.focus();
 }
 
 function changeToUserSetting(){
