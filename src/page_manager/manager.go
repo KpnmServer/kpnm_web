@@ -6,9 +6,12 @@ import (
 	ioutil "io/ioutil"
 	htmltmpl "html/template"
 
+	uuid "github.com/google/uuid"
 	iris "github.com/kataras/iris/v12"
 	router "github.com/kataras/iris/v12/core/router"
 )
+
+var SVR_UUID uuid.UUID = uuid.New()
 
 type pageInfo struct{
 	path string
@@ -88,10 +91,11 @@ func ServeStatic(group iris.Party, route string, path string, reload bool){
 	router.ExcludeSitemap()
 }
 
-func NoSitemap(routes ...*router.Route){
+func NoSitemap(routes ...*router.Route)([]*router.Route){
 	for _, r := range routes {
 		r.ExcludeSitemap()
 	}
+	return routes
 }
 
 func RegisterClose(call func()){

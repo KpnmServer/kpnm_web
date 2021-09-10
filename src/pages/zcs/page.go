@@ -20,7 +20,19 @@ func IndexPage(ctx iris.Context){
 	})
 }
 
+func StatusPage(ctx iris.Context){
+	name := ctx.Params().Get("name")
+	if _, ok := ZCS_SVR_INFOS[name]; !ok {
+		ctx.StatusCode(iris.StatusNotFound)
+		return
+	}
+	ctx.View("status.html", name)
+}
+
 func init(){page_mnr.Register("/zcs", "./webs/zcs", func(group iris.Party){
 	group.Get("/", IndexPage)
+	group.Get("/status", func(ctx iris.Context){ ctx.Redirect("./status/main") })
+	group.Get("/status/{name:string}", StatusPage)
+	InitApi(group)
 })}
 
