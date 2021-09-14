@@ -18,7 +18,7 @@ func IndexPage(ctx iris.Context){
 		ctx.Redirect("/user/login", iris.StatusFound)
 		return
 	}
-	ctx.View("index.html", user)
+	ctx.View("/user/index.html", user)
 }
 
 func UserIndexPage(ctx iris.Context){
@@ -40,11 +40,11 @@ func LoginPage(ctx iris.Context){
 		ctx.Redirect("/user", iris.StatusFound)
 		return
 	}
-	ctx.View("login.html")
+	ctx.View("/user/login.html")
 }
 
 func RegisterPage(ctx iris.Context){
-	ctx.View("register.html")
+	ctx.View("/user/register.html")
 }
 
 func SettingPage(ctx iris.Context){
@@ -59,10 +59,10 @@ func SettingPage(ctx iris.Context){
 		ctx.Redirect("/user/login", iris.StatusFound)
 		return
 	}
-	ctx.View("setting.html", user)
+	ctx.View("/user/setting.html", user)
 }
 
-func init(){page_mnr.Register("/user", "./webs/user", func(group iris.Party){
+func init(){page_mnr.Register("/user", func(group iris.Party){
 	group.Get("/", IndexPage)
 	group.Get("/look/{name:string}", UserIndexPage)
 	group.Get("/login", LoginPage)

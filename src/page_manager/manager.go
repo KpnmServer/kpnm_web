@@ -7,7 +7,9 @@ import (
 	htmltmpl "html/template"
 
 	uuid "github.com/google/uuid"
+	ufile "github.com/KpnmServer/go-util/file"
 	iris "github.com/kataras/iris/v12"
+	view "github.com/kataras/iris/v12/view"
 	router "github.com/kataras/iris/v12/core/router"
 )
 
@@ -21,20 +23,60 @@ type pageInfo struct{
 
 var _PAGES = make([]*pageInfo, 0)
 var _CLOSE_HANDLES = make([]func(), 0)
+type tmplCache struct{
+	tmpl *htmltmpl.Template
+	body []byte
+}
+var _GLOBAL_TMPLS = make([]tmplCache, 0)
 
-func RegisterHTML(group iris.Party, path string){
-	tmpl := iris.HTML(path, ".html")
-	tmpl.Reload(DEBUG)
+func GlobalHTML(path string){
+	var tmpl *view.HTMLEngine = iris.HTML(path, ".html")
+	tmpl.Load()
+	for _, t := range tmpl.Templates.Templates() {
+		name := t.Name()
+		f := ufile.JoinPath(path, name)
+		var err error
+		fd, err := os.Open(f)
+		if err != nil { continue }
+		data, err := ioutil.ReadAll(fd)
+		fd.Close()
+		if err != nil { continue }
+		_GLOBAL_TMPLS = append(_GLOBAL_TMPLS, tmplCache{tmpl: t, body:data})
+	}
+}
+
+type htmlHandler func(group iris.Party, tmpl view.EngineFuncer)
+
+func RegisterI18N(group iris.Party, tmpl view.EngineFuncer){
 	var i18nmap I18nMap = GetGlobalI18nMapCopy()
 	var i18nmapp *I18nMap = &i18nmap
 	group.Use(LocalHandle(i18nmapp))
 	tmpl.AddFunc("a", i18nmapp.Localization)
 	tmpl.AddFunc("getlang", i18nmapp.GetLocalLang)
-	tmpl.AddFunc("noesc", func(dt string)(interface{}){ return htmltmpl.HTML(dt) })
+}
+
+func RegisterHTML(group iris.Party, path string, handlers ...htmlHandler){
+	var tmpl *view.HTMLEngine = iris.HTML(path, ".html")
+	tmpl.Reload(DEBUG)
+	tmpl.Load()
+	for _, t := range _GLOBAL_TMPLS {
+		tmpl.ParseTemplate(t.tmpl.Name(), t.body, htmltmpl.FuncMap{})
+	}
+	for _, h := range handlers {
+		h(group, tmpl)
+	}
 	group.RegisterView(tmpl)
 }
 
-func Register(path string, temppath string, call func(iris.Party)){
+func Register(path string, call func(iris.Party)){
+	_PAGES = append(_PAGES, &pageInfo{
+		path: path,
+		temppath: "",
+		initcall: call,
+	})
+}
+
+func RegisterTemp(path string, temppath string, call func(iris.Party)){
 	_PAGES = append(_PAGES, &pageInfo{
 		path: path,
 		temppath: temppath,
@@ -47,7 +89,7 @@ func InitAll(app *iris.Application, initGroup func(iris.Party)){
 		group := app.Party(info.path)
 		initGroup(group)
 		if info.temppath != "" {
-			RegisterHTML(group, info.temppath)
+			RegisterHTML(group, info.temppath, RegisterI18N)
 		}
 		info.initcall(group)
 	}

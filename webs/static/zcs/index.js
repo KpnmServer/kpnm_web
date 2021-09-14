@@ -1,4 +1,6 @@
 
+"use strict";
+
 $(document).ready(function(){
 	$.ajax({
 		url: "/zcs/api/getcycleimgs",

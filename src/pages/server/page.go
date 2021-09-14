@@ -28,7 +28,9 @@ func IndexPage(ctx iris.Context){
 	}else{
 		svrList = make([]*ServerInfo, 0)
 	}
-	ctx.View("index.html", svrList)
+	ctx.View("/server/index.html", iris.Map{
+		"svrlist": svrList,
+	})
 }
 
 func ServerPage(ctx iris.Context){
@@ -47,7 +49,7 @@ func ServerPage(ctx iris.Context){
 	if err == nil {
 		iris_context.WriteMarkdown(readme_buf, readme_data, iris_context.DefaultMarkdownOptions)
 	}
-	ctx.View("info.html", iris.Map{
+	ctx.View("/server/info.html", iris.Map{
 		"name": svr.Name,
 		"version": svr.Version,
 		"desc": svr.Description,
@@ -101,7 +103,7 @@ func StatusPagePost(ctx iris.Context){
 	})
 }
 
-func init(){page_mnr.Register("/server", "./webs/server", func(group iris.Party){
+func init(){page_mnr.Register("/server", func(group iris.Party){
 	group.Get("/", IndexPage)
 	group.Get("/{name:string}", ServerPage)
 	group.Get("/{name:string}/status", page_mnr.SkipLogHandle, StatusPagePost)

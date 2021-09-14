@@ -3,5 +3,6 @@ User-agent: *
 
 Disallow: /user/setting/
 Disallow: /user/api/
+Disallow: /zcs/api/
 
 

@@ -1,24 +1,25 @@
-<!DOCTYPE HTML>
-<html lang="{{getlang}}">
+<!DOCTYPE html>
+<html lang="{{getlang()}}">
 	<head>
 		<meta charset="utf-8"/>
-		<title>ZClubServer Status</title>
+		<title>ZClubServer({{svrname}}) Status</title>
 		<meta name="keywords" content="minecraft,server,ZClubServer,status"/>
 		<meta name="description" content="z0z0r4's Minecraft server's status"/>
+		<meta name="viewport" content="initial-scale=0.65"/>
 		<!-- <link rel="stylesheet" type="text/css" href="/static/lib/global.css"/> -->
 		<link rel="stylesheet" type="text/css" href="/static/zcs/status.css"/>
 		<script type="text/javascript">
-			const SERVER_NAME = "{{.}}";
+			const SERVER_NAME = "{{svrname}}";
 		</script>
 	</head>
 	<body>
-		<h1>ZClubServer Status page <i>({{.}})</i></h1>
+		<h1>ZClubServer Status page <i>({{svrname}})</i></h1>
 		<div id="status-box">
 			<div id="status-status">
-				<b>status: </b><span id="status-status-v">UNKNOW</span>
+				<b>Status: </b><span id="status-status-v">UNKNOWN</span>
 			</div>
 			<div id="status-ticks" style="display: none;">
-				<b>ticks: </b><span id="status-ticks-v"></span>
+				<b>Ticks: </b><span id="status-ticks-v"></span>
 			</div>
 			<div id="status-cpu_num" style="display: none;">
 				<b>CPUs: </b><span id="status-cpu_num-v"></span>
@@ -34,18 +35,31 @@
 			</div>
 			<div id="status-total_mem" style="display: none;">
 				<b>Total Memory: </b><span id="status-total_mem-v"></span>
+				<span id="status-total_mem-item" class="block-item"></span>
 			</div>
 			<div id="status-used_mem" style="display: none;">
 				<b>Used Memory: </b><span id="status-used_mem-v"></span>
+				<span id="status-used_mem-item" class="block-item"></span>
 			</div>
 			<div id="status-cpu_load" style="display: none;">
 				<b>Cpu Load: </b><span id="status-cpu_load-v"></span>%
+				<span id="status-cpu_load-item" class="block-item"></span>
 			</div>
 			<div id="status-cpu_time" style="display: none;">
 				<b>Cpu Time: </b><span id="status-cpu_time-v"></span>
 			</div>
 			<div id="status-errstr" style="display: none;">
 				<b>Exit Error: </b><span id="status-errstr-v"></span>
+			</div>
+		</div>
+		<div id="images">
+			<div id="images-memory-box">
+				<h3>Memory Use</h3>
+				<canvas id="images-memory" width="1000" height="600"></canvas>
+			</div>
+			<div id="images-cpu-box">
+				<h3>CPU Load</h3>
+				<canvas id="images-cpu" width="1000" height="600"></canvas>
 			</div>
 		</div>
 

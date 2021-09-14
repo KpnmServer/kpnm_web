@@ -1,8 +1,8 @@
-<!DOCTYPE HTML>
-<html lang='{{getlang}}'>
+<!DOCTYPE html>
+<html lang='{{getlang()}}'>
 	<head>
 		<meta charset="utf-8"/>
-		<title>KpnmServer -{{a "title.minecraft.web"}}</title>
+		<title>KpnmServer -{{a("title.minecraft.web")}}</title>
 		<meta name="author" content="zyxgad,kupond"/>
 		<meta name="keywords" content="minecraft,server,mc,zclubserver"/>
 		<meta name="description" content="Kpnm Minecraft server welecome"/>
@@ -14,48 +14,48 @@
 		<header id="header">
 			<div id="header-user">
 				<a id="header-user-info"
-					href="{{if .islog}}/user/look/{{.user.name}}{{else}}/user/login{{end}}">
+					href="{% if islog %}/user/look/{{user.name}}{% else %}/user/login{% endif %}">
 					<span id="header-user-info-name">
-						{{if .islog}}
-						{{.user.name}}
-						{{else}}
-						{{a "word.not.logged"}}
-						{{end}}
+						{% if islog %}
+						{{ user.name}}
+						{% else %}
+						{{a("word.not.logged")}}
+						{% endif %}
 					</span>
 					<div id="header-user-info-head">
-						{{if .islog}}
-						<img src="/user/api/head/{{.user.id}}" alt="user_{{.user.id}}"
+						{% if islog %}
+						<img src="/user/api/head/{{user.id}}" alt="user_{{user.id}}"
 							onerror="this.onerror = null;this.src = '/static/images/empty.png'"/>
-						{{else}}
-						<img src="/static/images/empty.png" alt='{{a "word.not.logged"}}'/>
-						{{end}}
+						{% else %}
+						<img src="/static/images/empty.png" alt='{{a("word.not.logged")}}'/>
+						{% endif %}
 					</div>
 				</a>
 				<div id="header-user-desc" style="display: none;">
 					<div id="header-user-desc-box">
-						{{if .islog}}
-						<div id="header-user-desc-email" class="text-nowarp">{{a "word.user.email"}}: {{.user.email}}</div>
-						<div><a id="header-user-desc-userindex-btn" href="/user">{{a "word.user.index"}}</a></div>
-						<a id="header-user-desc-logout-btn" href="javascript:void(0)">{{a "word.logout"}}</a>
-						{{else}}
-						Go <a href="/user/login">{{a "word.login"}}</a>
-						{{end}}
+						{% if islog %}
+						<div id="header-user-desc-email" class="text-nowarp">{{a("word.user.email")}}: {{user.email}}</div>
+						<div><a id="header-user-desc-userindex-btn" href="/user">{{a("word.user.index")}}</a></div>
+						<a id="header-user-desc-logout-btn" href="javascript:void(0)">{{a("word.logout")}}</a>
+						{% else %}
+						Go <a href="/user/login">{{a("word.login")}}</a>
+						{% endif %}
 					</div>
 				</div>
 			</div>
 		</header>
 
 		<div id="body">
-			{{if .islog}}
-			<h1>Hello {{.user.name}}, Welecome back to KpnmServer</h1>
-			{{else}}
+			{% if islog %}
+			<h1>Hello {{user.name}}, Welecome back to KpnmServer</h1>
+			{% else %}
 			<h1>Welecome to KpnmServer</h1>
-			{{end}}
+			{% endif %}
 			<hr/>
 			<br/>
-			<h2><a href="/server">{{a "title.minecraft.server.list"}}</a></h2>
+			<h2><a href="/server">{{a("title.minecraft.server.list")}}</a></h2>
 			<br/>
-			<h2>Our friends <a href="/zcs">ZClubServer</a></h2>
+			<h2><a href="/zcs">ZClubServer is here</a></h2>
 		</div>
 
 		<footer id="footer">

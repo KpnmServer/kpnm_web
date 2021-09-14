@@ -72,7 +72,12 @@ func init(){
 func main(){
 	defer page_mnr.OnClose()
 
-	page_mnr.RegisterHTML(app, "./webs/globals")
+	// page_mnr.GlobalHTML("./webs/globals")
+	// page_mnr.RegisterHTML(app, "./webs/globals")
+	tmpl := iris.Django("./webs/", ".html")
+	tmpl.Reload(page_mnr.DEBUG)
+	page_mnr.RegisterI18N(app, tmpl)
+	app.RegisterView(tmpl)
 	page_mnr.NoSitemap(app.Favicon("./webs/static/favicon.ico"))
 	page_mnr.ServeStatic(app, "/robots.txt", "./webs/robots.txt", false)
 	page_mnr.ServeStatic(app, "/google9aa38deb43e89452.html", "./google9aa38deb43e89452.html", false)
@@ -113,7 +118,7 @@ func main(){
 func registerErrorPages(group iris.Party){
 	group.OnErrorCode(iris.StatusNotFound, func(ctx iris.Context){
 		url := ctx.Request().URL
-		ctx.View("404.html", iris.Map{
+		ctx.View("globals/404.html", iris.Map{
 			"path": url.Path,
 		})
 	})

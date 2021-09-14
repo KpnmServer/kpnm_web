@@ -153,3 +153,4 @@ func LocalHandle(i18nmap *I18nMap)(iris.Handler){
 		ctx.Next()
 	}
 }
+

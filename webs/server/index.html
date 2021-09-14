@@ -1,25 +1,25 @@
 <!DOCTYPE HTML>
-<html lang='{{getlang}}'>
+<html lang='{{getlang()}}'>
 	<head>
 		<meta charset="utf-8"/>
-		<title>{{a "title.minecraft.server.list"}} -KpnmServer</title>
+		<title>{{a("title.minecraft.server.list")}} -KpnmServer</title>
 		<meta name="keywords" content="minecraft,server,mc,server list"/>
-		<meta name="description" content='{{a "description.web.server.index"}}'/>
+		<meta name="description" content='{{a("description.web.server.index")}}'/>
 		<meta name="viewport" content="initial-scale=0.75"/>
 		<link rel="stylesheet" type="text/css" href="/static/lib/global.css"/>
 		<link rel="stylesheet" type="text/css" href="/static/server/index.css"/>
 	</head>
 	<body>
 		<div id="server-box">
-			<h1 style="text-align: center;">{{a "title.minecraft.server.list"}}</h1>
+			<h1 style="text-align: center;">{{a("title.minecraft.server.list")}}</h1>
 			<hr/>
-			{{range $_, $ele := .}}
+			{% for ele in svrlist %}
 			<div class="server-item">
-				<h4 class="server-item-name"><a href="/server/{{$ele.Name}}">{{$ele.Name}}</a></h4>
-				<i>{{a "word.server.info.version"}}: <span class="server-item-version">{{$ele.Version}}</span></i><br/>
-				<p class="server-item-desc">{{$ele.Description}}</p>
+				<h4 class="server-item-name"><a href="/server/{{ele.Name}}">{{ele.Name}}</a></h4>
+				<i>{{a("word.server.info.version")}}: <span class="server-item-version">{{ele.Version}}</span></i><br/>
+				<p class="server-item-desc">{{ele.Description}}</p>
 			</div>
-			{{end}}
+			{% endfor %}
 		</div>
 		<script type="text/javascript" src="/static/server/index.js"></script>
 	</body>

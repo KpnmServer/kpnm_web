@@ -1,0 +1,39 @@
+
+.block-item{
+	width: 0.7rem;
+	height: 0.7rem;
+	display: inline-block;
+}
+
+#status-total_mem-item{
+	background-color: #0f0;
+}
+
+#status-used_mem-item{
+	background-color: #03f;
+}
+
+#status-cpu_load-item{
+	background-color: #f30;
+}
+
+#images{
+	display: block;
+}
+
+#images>div{
+	width: 35rem;
+	margin-top: 1rem;
+	display: inline-block;
+}
+
+#images>div>h3{
+	width: 100%;
+	text-align: center;
+	margin-bottom: 0;
+}
+
+#images>div>canvas{
+	width: 100%;
+	height: 21rem;
+}

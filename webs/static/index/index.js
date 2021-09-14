@@ -1,4 +1,6 @@
 
+"use strict";
+
 $(document).ready(function(){
 	var userdescDOM = $("#header-user-desc");
 	userdescDOM.hide();

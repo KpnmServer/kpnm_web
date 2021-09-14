@@ -20,9 +20,9 @@ func IndexPage(ctx iris.Context){
 			"email": user.Email,
 		}
 	}
-	ctx.View("index.html", data)
+	ctx.View("/index/index.html", data)
 }
 
-func init(){page_mnr.Register("/", "./webs/index", func(group iris.Party){
+func init(){page_mnr.Register("/", func(group iris.Party){
 	group.Get("/", IndexPage)
 })}

@@ -8,7 +8,7 @@ import (
 
 
 func IndexPage(ctx iris.Context){
-	ctx.View("index.html", iris.Map{
+	ctx.View("/zcs/index.html", iris.Map{
 		"cycle_imgs": [][2]string{
 			{"/static/images/zcs/index/cycle-1.png", "cycle1"},
 			{"/static/images/zcs/index/cycle-2.png", "cycle2"},
@@ -26,10 +26,12 @@ func StatusPage(ctx iris.Context){
 		ctx.StatusCode(iris.StatusNotFound)
 		return
 	}
-	ctx.View("status.html", name)
+	ctx.View("/zcs/status.html", iris.Map{
+		"svrname": name,
+	})
 }
 
-func init(){page_mnr.Register("/zcs", "./webs/zcs", func(group iris.Party){
+func init(){page_mnr.Register("/zcs", func(group iris.Party){
 	group.Get("/", IndexPage)
 	group.Get("/status", func(ctx iris.Context){ ctx.Redirect("./status/main") })
 	group.Get("/status/{name:string}", StatusPage)

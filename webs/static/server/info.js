@@ -1,8 +1,9 @@
 
+"use strict";
 
 $(document).ready(function(){
 	if(window.Worker){
-		let worker = new Worker('/static/server/infogetter.js');
+		let worker = new window.Worker('/static/server/infogetter.js');
 		worker.onmessage = function (event){
 			const res = event.data;
 			if(res.status === "ok"){
