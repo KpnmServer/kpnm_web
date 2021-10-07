@@ -1,0 +1,37 @@
+
+body{
+	background-color: #c9c9c9;
+}
+
+#window{
+	width: min(60rem, max(94%, 20rem));
+	height: 36rem;
+	display: flex;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: none;
+	border-radius: 1.5rem;
+	background-color: #88f5d0;
+	box-shadow: 0 0 5px;
+}
+
+#plist{
+	width: max(36%, 4rem);
+	height: 100%;
+	border: none;
+	border-top-left-radius: 1.5rem;
+	border-bottom-left-radius: 1.5rem;
+	background-color: #3514b4;
+	color: #fff;
+}
+
+#content{
+	width: calc(100% - max(36%,4rem));
+	height: 100%;
+	border: none;
+	border-top-right-radius: 1.5rem;
+	border-bottom-right-radius: 1.5rem;
+	background-color: #a9f3a6;
+}

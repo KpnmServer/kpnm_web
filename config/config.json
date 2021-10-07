@@ -1,0 +1,11 @@
+{
+	"port": 80,
+	"debug": true,
+	"https": false,
+	"crt_file": "/path/to/crt/file",
+	"key_file": "/path/to/key/file",
+	"languages": [
+		"en-us:language/en-us/lang.json",
+		"zh-cn:language/zh-cn/lang.json"
+	]
+}

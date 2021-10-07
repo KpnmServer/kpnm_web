@@ -1,0 +1,68 @@
+
+#search-box{
+	width: min(43rem, 94%);
+	height: 4rem;
+	margin: 0 auto;
+	margin-top: 4rem;
+	position: relative;
+	border: #aaaaaa 1px solid;
+	border-radius: 0.5rem;
+}
+
+#search-text{
+	display: inline-block;
+	width: 80%;
+	height: 2rem;
+	margin-left: 7%;
+	padding-left: 0.5rem;
+	outline: none;
+	border: none;
+	border-bottom: #aaaaaa 1px solid;
+	font-size: 1.3rem;
+	position: absolute;
+	top: 1rem;
+}
+
+#search-submit{
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	background: #000;
+	position: absolute;
+	left: 87%;
+	top: 1rem;
+}
+
+#server-box{
+	width: min(43rem, 94%);
+	margin: 0 auto;
+	margin-top: 1rem;
+	padding: 0.65rem;
+	border: #aaaaaa 1px solid;
+	border-radius: 0.5rem;
+}
+
+.server-item{
+	width: 100%;
+	margin-top: 1rem;
+	border-bottom: #aaaaaa 1px solid;
+}
+
+.server-item-name{
+	display: inline-block;
+	font-size: 1.4rem;
+}
+
+.server-item-name>a{
+	color: #000000;
+}
+
+.server-item-version{
+	font-size: 1.05rem;
+}
+
+.server-item-desc{
+	margin-left: 0.5rem;
+	font-size: 1.1rem;
+	color: #999999;
+}

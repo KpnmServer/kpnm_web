@@ -1,0 +1,23 @@
+
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+a{
+	color: #0366d6;
+	text-decoration: none;
+}
+
+a:hover{
+	text-decoration: underline;
+}
+
+
+.text-nowarp{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+

@@ -1,0 +1,70 @@
+
+#body{
+	display: flex;
+	padding: min(1.6rem, 6%);
+	flex-direction: column;
+	align-items: center;
+}
+
+#info{
+	width: 90%;
+	margin-bottom: 2rem;
+}
+
+#info-desc{
+	font-size: 0.9em;
+	font-weight: 100;
+	margin-left: 2em;
+	color: #999999;
+}
+
+#info-readme{
+	width: 94%;
+	display: block;
+	margin-top: 2rem;
+	border: #aaaaaa 1px solid;
+	border-radius: 0.7rem;
+}
+
+#status{
+	width: min(28rem, 94%);
+	padding: 0.7rem;
+	border: #aaaaaa 1px solid;
+	border-radius: 0.7rem;
+}
+
+#status>h3:first-child{
+	margin-bottom: 0.7em;
+}
+
+#status-box>div{
+	margin-bottom: 0.3em;
+	padding-left: 0.6em;
+}
+
+#status-favicon{
+	width: 4rem;
+	height: 4rem;
+	border: solid 1px #000;
+}
+
+.status-item{
+	display: inline-block;
+}
+
+#status-players{
+	margin-left: 30px;
+}
+
+#status-error::before{
+	content: "Ping Error: ";
+}
+
+#status-error{
+	color: #ee0033;
+}
+
+#status-error::after{
+	content: "\A(Please contact the server administrator)";
+	white-space: break-spaces;
+}

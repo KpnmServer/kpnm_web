@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>401 Unauthorized</title>
+	</head>
+	<body>
+		<h1>Page "{{path}}" is unauthorized</h1>
+		<hr/>
+		{% if not islogin %}
+		<p>You are not login, please <a href="/user/login#{{path}}">go login</a></p>
+		{% else %}
+		<p>You don't have permission, please contact the operator to get permission</p>
+		{% endif %}
+	</body>
+</html>
+

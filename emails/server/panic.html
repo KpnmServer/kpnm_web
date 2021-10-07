@@ -1,0 +1,22 @@
+{{define "server/panic.html"}}
+<style type="text/css">
+	#stack-box:nth-child(odd){
+		background-color: #0f0;
+	}
+	#stack-box:nth-child(even){
+		background-color: #03d;
+	}
+</style>
+
+<h1>Server panic</h1>
+<p><b>path: </b>{{.path}}</p>
+<p><b>error: </b>{{.error}}</p>
+<p>
+	<b>stacks: </b>
+	<div id="stack-box">
+		{{range $_, $s := .stacks}}
+		<p>{{$s}}</p>
+		{{end}}
+	</div>
+</p>
+{{end}}

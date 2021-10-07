@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang='{{getlang()}}'>
+	<head>
+		<meta charset="utf-8"/>
+		<title>KpnmServer -{{a("title.minecraft.web")}}</title>
+		<meta name="author" content="zyxgad,kupond"/>
+		<meta name="keywords" content="minecraft,server,mc,zclubserver"/>
+		<meta name="description" content="Kpnm Minecraft server welecome"/>
+		<meta name="viewport" content="initial-scale=0.8"/>
+		<link rel="stylesheet" type="text/css" href="/static/lib/global.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/index/index.css"/>
+	</head>
+	<body>
+		<header id="header">
+			<div id="header-user">
+				<a id="header-user-info"
+					href="{% if islog %}/user/@/{{user.name}}{% else %}/user/login{% endif %}">
+					<span id="header-user-info-name">
+						{% if islog %}
+						{{ user.name}}
+						{% else %}
+						{{a("word.not.logged")}}
+						{% endif %}
+					</span>
+					<div id="header-user-info-head">
+						{% if islog %}
+						<img src="/user/api/head/{{user.id}}" alt="user_{{user.id}}"
+							onerror="this.onerror = null;this.src = '/static/images/empty.png'"/>
+						{% else %}
+						<img src="/static/images/empty.png" alt='{{a("word.not.logged")}}'/>
+						{% endif %}
+					</div>
+				</a>
+				<div id="header-user-desc" style="display: none;">
+					<div id="header-user-desc-box">
+						{% if islog %}
+						<div id="header-user-desc-email" class="text-nowarp">{{a("word.user.email")}}: {{user.email}}</div>
+						<div><a id="header-user-desc-userindex-btn" href="/user">{{a("word.user.index")}}</a></div>
+						<a id="header-user-desc-logout-btn" href="javascript:void(0)">{{a("word.logout")}}</a>
+						{% else %}
+						Go <a href="/user/login">{{a("word.login")}}</a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div id="body">
+			{% if islog %}
+			<h1>Hello {{user.name}}, Welecome back to KpnmServer</h1>
+			{% else %}
+			<h1>Welecome to KpnmServer</h1>
+			{% endif %}
+			<hr/>
+			<br/>
+			<h2><a href="/chat">Let's go Chat</a></h2>
+			<br/>
+			<h2><a href="/server">{{a("title.minecraft.server.list")}}</a></h2>
+			<br/>
+			<h2><a href="/zcs">ZClubServer is here</a></h2>
+		</div>
+
+		<footer id="footer">
+			<address>
+				Written by <a href="mailto:kupond@outlook.com">kupond@outlook.com</a>.<br/>
+				Visit us at: <a href="https://github.com/KpnmServer/">https://github.com/KpnmServer/</a>
+			</address>
+			copyright &copy; 2021
+		</footer>
+
+		<script type="text/javascript" src="/static/lib/loader.js"></script>
+		<script type="text/javascript" src="/static/index/index.js"></script>
+	</body>
+</html>
